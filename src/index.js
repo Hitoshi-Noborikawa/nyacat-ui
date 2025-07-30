@@ -1,6 +1,20 @@
 import plugin from 'tailwindcss/plugin'
 
-export default plugin(function({ addComponents, addUtilities }) {
+export default plugin(function({ addComponents, addUtilities, addBase }) {
+  // キーフレームアニメーションを追加
+  addBase({
+    '@keyframes neko-spin': {
+      '0%': { transform: 'translate(-50%, -50%) rotate(0deg)' },
+      '100%': { transform: 'translate(-50%, -50%) rotate(360deg)' }
+    },
+    '@keyframes neko-groom': {
+      '0%, 100%': { transform: 'translate(-50%, -50%) scale(1)' },
+      '25%': { transform: 'translate(-50%, -60%) scale(0.9) rotate(-10deg)' },
+      '50%': { transform: 'translate(-50%, -40%) scale(1.1) rotate(5deg)' },
+      '75%': { transform: 'translate(-50%, -50%) scale(0.95) rotate(-5deg)' }
+    }
+  })
+
   // NekoButton コンポーネント
   addComponents({
     '.btn-neko': {
@@ -352,6 +366,69 @@ export default plugin(function({ addComponents, addUtilities }) {
       'font-size': '16px',
       'pointer-events': 'none',
       'z-index': '10'
+    },
+
+    // NekoLoading コンポーネント
+    '.loading-neko': {
+      '@apply inline-block relative': {},
+      'width': '40px',
+      'height': '40px',
+      
+      '&::before': {
+        'content': '"🐱"',
+        'position': 'absolute',
+        'top': '50%',
+        'left': '50%',
+        'transform': 'translate(-50%, -50%)',
+        'font-size': '24px',
+        'animation': 'neko-spin 2s linear infinite'
+      }
+    },
+
+    // 毛づくろいローディング
+    '.loading-neko-groom': {
+      '@apply inline-block relative': {},
+      'width': '40px',
+      'height': '40px',
+      
+      '&::before': {
+        'content': '"🐱"',
+        'position': 'absolute',
+        'top': '50%',
+        'left': '50%',
+        'transform': 'translate(-50%, -50%)',
+        'font-size': '24px',
+        'animation': 'neko-groom 3s ease-in-out infinite'
+      }
+    },
+
+
+    // サイズバリエーション
+    '.loading-neko-sm': {
+      'width': '24px',
+      'height': '24px',
+      
+      '&::before': {
+        'font-size': '16px'
+      }
+    },
+
+    '.loading-neko-lg': {
+      'width': '60px',
+      'height': '60px',
+      
+      '&::before': {
+        'font-size': '36px'
+      }
+    },
+
+    '.loading-neko-xl': {
+      'width': '80px',
+      'height': '80px',
+      
+      '&::before': {
+        'font-size': '48px'
+      }
     }
   })
 
@@ -405,7 +482,9 @@ export default plugin(function({ addComponents, addUtilities }) {
         'purr': 'purr 2s ease-in-out infinite',
         'ear-wiggle': 'ear-wiggle 0.8s ease-in-out',
         'ear-wiggle-right': 'ear-wiggle-right 0.8s ease-in-out',
-        'tail-wag-input': 'tail-wag-input 1.2s ease-in-out infinite'
+        'tail-wag-input': 'tail-wag-input 1.2s ease-in-out infinite',
+        'neko-spin': 'neko-spin 2s linear infinite',
+        'neko-groom': 'neko-groom 3s ease-in-out infinite'
       },
       keyframes: {
         'paw-bounce': {
@@ -449,6 +528,16 @@ export default plugin(function({ addComponents, addUtilities }) {
           '25%': { transform: 'translateY(-45%) rotate(10deg) scaleY(1.05)' },
           '50%': { transform: 'translateY(-50%) rotate(-8deg) scaleY(1.02)' },
           '75%': { transform: 'translateY(-55%) rotate(12deg) scaleY(1.08)' }
+        },
+        'neko-spin': {
+          '0%': { transform: 'translate(-50%, -50%) rotate(0deg)' },
+          '100%': { transform: 'translate(-50%, -50%) rotate(360deg)' }
+        },
+        'neko-groom': {
+          '0%, 100%': { transform: 'translate(-50%, -50%) scale(1)' },
+          '25%': { transform: 'translate(-50%, -60%) scale(0.9) rotate(-10deg)' },
+          '50%': { transform: 'translate(-50%, -40%) scale(1.1) rotate(5deg)' },
+          '75%': { transform: 'translate(-50%, -50%) scale(0.95) rotate(-5deg)' }
         }
       }
     }

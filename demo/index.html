@@ -71,6 +71,82 @@
         </div>
       </section>
 
+      <!-- NekoLoading セクション -->
+      <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-bold text-neko-black mb-6">⏳ NekoLoading</h2>
+        <p class="text-neko-gray mb-8 text-center">可愛い猫のローディングアニメーション</p>
+        
+        <!-- 基本のローディング -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-neko-black mb-4">🔄 基本のローディング</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="text-center bg-gray-50 p-6 rounded-lg">
+              <div class="loading-neko mx-auto mb-4"></div>
+              <h4 class="font-medium text-neko-black mb-2">くるくる回転</h4>
+              <p class="text-sm text-neko-gray mb-2">.loading-neko</p>
+              <p class="text-xs text-neko-gray">2秒で1回転</p>
+            </div>
+            <div class="text-center bg-gray-50 p-6 rounded-lg">
+              <div class="loading-neko-groom mx-auto mb-4"></div>
+              <h4 class="font-medium text-neko-black mb-2">毛づくろい</h4>
+              <p class="text-sm text-neko-gray mb-2">.loading-neko-groom</p>
+              <p class="text-xs text-neko-gray">上下に動いて毛づくろい</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- サイズバリエーション -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-neko-black mb-4">📏 サイズバリエーション</h3>
+          <div class="flex items-center justify-center space-x-8 bg-gray-50 p-6 rounded-lg">
+            <div class="text-center">
+              <div class="loading-neko loading-neko-sm mx-auto mb-2"></div>
+              <p class="text-xs text-neko-gray">Small (.loading-neko-sm)</p>
+            </div>
+            <div class="text-center">
+              <div class="loading-neko mx-auto mb-2"></div>
+              <p class="text-xs text-neko-gray">Default</p>
+            </div>
+            <div class="text-center">
+              <div class="loading-neko loading-neko-lg mx-auto mb-2"></div>
+              <p class="text-xs text-neko-gray">Large (.loading-neko-lg)</p>
+            </div>
+            <div class="text-center">
+              <div class="loading-neko loading-neko-xl mx-auto mb-2"></div>
+              <p class="text-xs text-neko-gray">Extra Large (.loading-neko-xl)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 実用例 -->
+        <div class="border-t border-neko-gray/20 pt-6">
+          <h3 class="text-xl font-semibold text-neko-black mb-4">✨ 実用例</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h4 class="font-medium text-neko-black mb-4">ボタンのローディング状態</h4>
+              <div class="space-y-3">
+                <button class="btn-neko flex items-center space-x-2" disabled>
+                  <div class="loading-neko-sm"></div>
+                  <span>送信中...</span>
+                </button>
+                <button class="btn-neko btn-neko-orange flex items-center space-x-2" disabled>
+                  <div class="loading-neko-groom loading-neko-sm"></div>
+                  <span>処理中...</span>
+                </button>
+              </div>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h4 class="font-medium text-neko-black mb-4">ページローディング</h4>
+              <div class="text-center">
+                <div class="loading-neko-groom loading-neko-lg mx-auto mb-4"></div>
+                <p class="text-neko-gray">コンテンツを読み込み中...</p>
+                <p class="text-xs text-neko-gray mt-2">猫が毛づくろい中...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- 猫パーツ セクション -->
       <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
         <h2 class="text-3xl font-bold text-neko-black mb-6">🐾 猫パーツ</h2>
@@ -299,9 +375,18 @@
 &lt;input type="text" class="input-neko input-neko-tuxedo" placeholder="ハチワレ風"&gt;
 &lt;input type="text" class="input-neko input-neko-gray" placeholder="グレー風"&gt;
 
+&lt;!-- NekoLoading --&gt;
+&lt;div class="loading-neko"&gt;&lt;/div&gt;
+&lt;div class="loading-neko-groom"&gt;&lt;/div&gt;
+
+&lt;!-- サイズバリエーション --&gt;
+&lt;div class="loading-neko loading-neko-sm"&gt;&lt;/div&gt;
+&lt;div class="loading-neko loading-neko-lg"&gt;&lt;/div&gt;
+
 &lt;!-- ボタンとの組み合わせ --&gt;
-&lt;button class="btn-neko btn-neko-orange btn-neko-tail animate-tail-wag"&gt;
-  茶トラ + 尻尾 + しっぽフリフリ
+&lt;button class="btn-neko flex items-center space-x-2" disabled&gt;
+  &lt;div class="loading-neko-sm"&gt;&lt;/div&gt;
+  &lt;span&gt;送信中...&lt;/span&gt;
 &lt;/button&gt;
 
 &lt;!-- カスタムカラー --&gt;
