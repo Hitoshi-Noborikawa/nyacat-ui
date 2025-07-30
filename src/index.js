@@ -199,6 +199,159 @@ export default plugin(function({ addComponents, addUtilities }) {
       '&:active::before': {
         'transform': 'translateX(-50%) scale(1.3)'
       }
+    },
+
+    // NekoInput ラッパー
+    '.neko-input-wrapper': {
+      'position': 'relative',
+      'display': 'inline-block',
+      'width': '100%'
+    },
+
+    // NekoInput 基本スタイル
+    '.neko-input-wrapper input, .neko-input-wrapper select, .neko-input-wrapper textarea': {
+      '@apply w-full px-4 py-2 border-2 border-gray-300 rounded-lg': {},
+      'transition': 'all 0.3s ease',
+      'outline': 'none',
+      
+      '&:focus': {
+        'border-color': '#fb923c',
+        'box-shadow': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+      }
+    },
+
+    // 猫耳
+    '.neko-ears::before, .neko-ears::after': {
+      'content': '""',
+      'position': 'absolute',
+      'top': '-12px',
+      'width': '0',
+      'height': '0',
+      'opacity': '0',
+      'transition': 'opacity 0.3s ease, transform 0.3s ease',
+      'pointer-events': 'none',
+      'transform-origin': 'bottom center'
+    },
+
+    '.neko-ears::before': {
+      'left': '25px',
+      'border-left': '12px solid transparent',
+      'border-right': '6px solid transparent', 
+      'border-bottom': '16px solid #fb923c',
+      'transform': 'rotate(-10deg)',
+      'box-shadow': 'inset -3px -4px 0 #ff8fa3, 0 2px 4px rgba(0, 0, 0, 0.1)'
+    },
+
+    '.neko-ears::after': {
+      'right': '25px',
+      'border-left': '6px solid transparent',
+      'border-right': '12px solid transparent',
+      'border-bottom': '16px solid #fb923c', 
+      'transform': 'rotate(10deg)',
+      'box-shadow': 'inset 3px -4px 0 #ff8fa3, 0 2px 4px rgba(0, 0, 0, 0.1)'
+    },
+
+    // 尻尾
+    '.neko-tail': {
+      'position': 'absolute',
+      'right': '-25px',
+      'top': '50%',
+      'transform': 'translateY(-50%)',
+      'width': '40px',
+      'height': '12px',
+      'background': 'linear-gradient(45deg, #fb923c 0%, #f97316 100%)',
+      'border-radius': '20px 8px 8px 4px',
+      'opacity': '0',
+      'transition': 'opacity 0.3s ease, transform 0.3s ease',
+      'pointer-events': 'none',
+      'transform-origin': 'left center',
+      'clip-path': 'polygon(0% 20%, 100% 0%, 100% 40%, 95% 50%, 100% 60%, 100% 100%, 0% 80%)',
+      'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.1), inset 0 -2px 0 rgba(0, 0, 0, 0.1)'
+    },
+
+    // フォーカス時の猫パーツ表示
+    '.neko-input-wrapper input:focus ~ .neko-ears::before, .neko-input-wrapper input:focus ~ .neko-ears::after': {
+      'opacity': '1'
+    },
+
+    '.neko-input-wrapper input:focus ~ .neko-ears::before': {
+      'animation': 'ear-wiggle 0.8s ease-in-out'
+    },
+
+    '.neko-input-wrapper input:focus ~ .neko-ears::after': {
+      'animation': 'ear-wiggle-right 0.8s ease-in-out'
+    },
+
+    '.neko-input-wrapper input:focus ~ .neko-tail': {
+      'opacity': '1',
+      'animation': 'tail-wag-input 1.2s ease-in-out infinite'
+    },
+
+    // selectとtextarea用
+    '.neko-input-wrapper select:focus ~ .neko-ears::before, .neko-input-wrapper select:focus ~ .neko-ears::after': {
+      'opacity': '1'
+    },
+
+    '.neko-input-wrapper select:focus ~ .neko-ears::before': {
+      'animation': 'ear-wiggle 0.8s ease-in-out'
+    },
+
+    '.neko-input-wrapper select:focus ~ .neko-ears::after': {
+      'animation': 'ear-wiggle-right 0.8s ease-in-out'
+    },
+
+    '.neko-input-wrapper select:focus ~ .neko-tail': {
+      'opacity': '1',
+      'animation': 'tail-wag-input 1.2s ease-in-out infinite'
+    },
+
+    '.neko-input-wrapper textarea:focus ~ .neko-ears::before, .neko-input-wrapper textarea:focus ~ .neko-ears::after': {
+      'opacity': '1'
+    },
+
+    '.neko-input-wrapper textarea:focus ~ .neko-ears::before': {
+      'animation': 'ear-wiggle 0.8s ease-in-out'
+    },
+
+    '.neko-input-wrapper textarea:focus ~ .neko-ears::after': {
+      'animation': 'ear-wiggle-right 0.8s ease-in-out'
+    },
+
+    '.neko-input-wrapper textarea:focus ~ .neko-tail': {
+      'opacity': '1',
+      'animation': 'tail-wag-input 1.2s ease-in-out infinite'
+    },
+
+    // NekoInput エラー状態（ラッパー用）
+    '.neko-input-error input, .neko-input-error select, .neko-input-error textarea': {
+      'border-color': '#f87171 !important'
+    },
+
+    '.neko-input-error::before': {
+      'content': '"😾"',
+      'position': 'absolute',
+      'right': '10px',
+      'top': '50%',
+      'transform': 'translateY(-50%)',
+      'font-size': '16px',
+      'pointer-events': 'none',
+      'z-index': '10'
+    },
+
+    // NekoInput 成功状態（ラッパー用）
+    '.neko-input-success input, .neko-input-success select, .neko-input-success textarea': {
+      'border-color': '#4ade80 !important'
+    },
+
+    '.neko-input-success::before': {
+      'content': '"😸"',
+      'position': 'absolute',
+      'right': '10px',
+      'top': '50%',
+      'transform': 'translateY(-50%)',
+      'font-size': '16px',
+      'pointer-events': 'none',
+      'z-index': '10'
     }
   })
 
@@ -249,7 +402,10 @@ export default plugin(function({ addComponents, addUtilities }) {
         'paw-bounce': 'paw-bounce 0.3s ease-in-out',
         'paw-print': 'paw-print 0.2s ease-out',
         'tail-wag': 'tail-wag 1s ease-in-out infinite',
-        'purr': 'purr 2s ease-in-out infinite'
+        'purr': 'purr 2s ease-in-out infinite',
+        'ear-wiggle': 'ear-wiggle 0.8s ease-in-out',
+        'ear-wiggle-right': 'ear-wiggle-right 0.8s ease-in-out',
+        'tail-wag-input': 'tail-wag-input 1.2s ease-in-out infinite'
       },
       keyframes: {
         'paw-bounce': {
@@ -269,6 +425,30 @@ export default plugin(function({ addComponents, addUtilities }) {
         'purr': {
           '0%, 100%': { opacity: 1 },
           '50%': { opacity: 0.7 }
+        },
+        'ear-wiggle': {
+          '0%': { transform: 'rotate(-10deg) scale(1)' },
+          '15%': { transform: 'rotate(-15deg) scale(1.05)' },
+          '30%': { transform: 'rotate(-5deg) scale(1.02)' },
+          '45%': { transform: 'rotate(-12deg) scale(1.08)' },
+          '60%': { transform: 'rotate(-8deg) scale(1.02)' },
+          '75%': { transform: 'rotate(-10deg) scale(1.05)' },
+          '100%': { transform: 'rotate(-10deg) scale(1)' }
+        },
+        'ear-wiggle-right': {
+          '0%': { transform: 'rotate(10deg) scale(1)' },
+          '15%': { transform: 'rotate(15deg) scale(1.05)' },
+          '30%': { transform: 'rotate(5deg) scale(1.02)' },
+          '45%': { transform: 'rotate(12deg) scale(1.08)' },
+          '60%': { transform: 'rotate(8deg) scale(1.02)' },
+          '75%': { transform: 'rotate(10deg) scale(1.05)' },
+          '100%': { transform: 'rotate(10deg) scale(1)' }
+        },
+        'tail-wag-input': {
+          '0%, 100%': { transform: 'translateY(-50%) rotate(-5deg) scaleY(1)' },
+          '25%': { transform: 'translateY(-45%) rotate(10deg) scaleY(1.05)' },
+          '50%': { transform: 'translateY(-50%) rotate(-8deg) scaleY(1.02)' },
+          '75%': { transform: 'translateY(-55%) rotate(12deg) scaleY(1.08)' }
         }
       }
     }

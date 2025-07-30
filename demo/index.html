@@ -134,6 +134,104 @@
         </div>
       </section>
 
+      <!-- NekoInput セクション -->
+      <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-bold text-neko-black mb-6">📝 NekoInput</h2>
+        <p class="text-neko-gray mb-8 text-center">フォーカス時に猫耳が出現する入力フィールド</p>
+        
+        <!-- 基本のNekoInput -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-neko-black mb-4">🐱 基本のNekoInput</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-neko-gray mb-2">新しい NekoInput（猫耳 + 尻尾）</label>
+              <div class="neko-input-wrapper">
+                <input type="text" placeholder="フォーカスすると猫耳と尻尾が出るよ！">
+                <div class="neko-ears"></div>
+                <div class="neko-tail"></div>
+              </div>
+              <p class="text-xs text-neko-gray mt-1">クラス: .neko-input-wrapper（猫耳のピクピク + 尻尾のフリフリ）</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 状態バリエーション -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-neko-black mb-4">😾😸 状態バリエーション</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-red-600 mb-2">エラー状態</label>
+              <div class="neko-input-wrapper neko-input-error">
+                <input type="email" placeholder="無効なメールアドレス" value="invalid-email">
+                <div class="neko-ears"></div>
+                <div class="neko-tail"></div>
+              </div>
+              <p class="text-xs text-neko-gray mt-1">クラス: .neko-input-wrapper .neko-input-error</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-green-600 mb-2">成功状態</label>
+              <div class="neko-input-wrapper neko-input-success">
+                <input type="email" placeholder="有効なメールアドレス" value="cat@example.com">
+                <div class="neko-ears"></div>
+                <div class="neko-tail"></div>
+              </div>
+              <p class="text-xs text-neko-gray mt-1">クラス: .neko-input-wrapper .neko-input-success</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- フォーム例 -->
+        <div class="border-t border-neko-gray/20 pt-6">
+          <h3 class="text-xl font-semibold text-neko-black mb-4">✨ 実用例：猫の登録フォーム</h3>
+          <form class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-neko-black mb-2">猫の名前 *</label>
+                <div class="neko-input-wrapper">
+                  <input type="text" placeholder="例: ミケ" required>
+                  <div class="neko-ears"></div>
+                  <div class="neko-tail"></div>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-neko-black mb-2">年齢</label>
+                <div class="neko-input-wrapper">
+                  <input type="number" placeholder="例: 3" min="0">
+                  <div class="neko-ears"></div>
+                  <div class="neko-tail"></div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-neko-black mb-2">種類</label>
+              <div class="neko-input-wrapper">
+                <select>
+                  <option>雑種</option>
+                  <option>アメリカンショートヘア</option>
+                  <option>ペルシャ</option>
+                  <option>ロシアンブルー</option>
+                </select>
+                <div class="neko-ears"></div>
+                <div class="neko-tail"></div>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-neko-black mb-2">特徴・性格</label>
+              <div class="neko-input-wrapper">
+                <textarea rows="3" placeholder="うちの猫の可愛いところを教えて！"></textarea>
+                <div class="neko-ears"></div>
+                <div class="neko-tail"></div>
+              </div>
+            </div>
+            <div class="flex justify-end">
+              <button type="submit" class="btn-neko btn-neko-orange">
+                🐾 登録する
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
       <!-- カラーパレット セクション -->
       <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
         <h2 class="text-3xl font-bold text-neko-black mb-6">🎨 カラーパレット</h2>
@@ -191,12 +289,19 @@
 &lt;button class="btn-neko btn-neko-paws"&gt;肉球付き&lt;/button&gt;
 &lt;button class="btn-neko btn-neko-paws-css"&gt;CSS肉球&lt;/button&gt;
 
-&lt;!-- 組み合わせ --&gt;
+&lt;!-- NekoInput --&gt;
+&lt;input type="text" class="input-neko" placeholder="基本の入力"&gt;
+&lt;input type="email" class="input-neko input-neko-error" placeholder="エラー状態"&gt;
+&lt;input type="text" class="input-neko input-neko-success" placeholder="成功状態"&gt;
+
+&lt;!-- 猫種バリエーション --&gt;
+&lt;input type="text" class="input-neko input-neko-orange" placeholder="茶トラ風"&gt;
+&lt;input type="text" class="input-neko input-neko-tuxedo" placeholder="ハチワレ風"&gt;
+&lt;input type="text" class="input-neko input-neko-gray" placeholder="グレー風"&gt;
+
+&lt;!-- ボタンとの組み合わせ --&gt;
 &lt;button class="btn-neko btn-neko-orange btn-neko-tail animate-tail-wag"&gt;
   茶トラ + 尻尾 + しっぽフリフリ
-&lt;/button&gt;
-&lt;button class="btn-neko btn-neko-white btn-neko-paws animate-purr"&gt;
-  白猫 + 肉球 + ゴロゴロ
 &lt;/button&gt;
 
 &lt;!-- カスタムカラー --&gt;

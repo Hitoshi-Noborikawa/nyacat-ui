@@ -1,3 +1,175 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* デバッグ用の猫耳CSS - ラッパーアプローチ */
+.neko-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.neko-input-wrapper input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 2px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.neko-input-wrapper input:focus {
+  border-color: #fb923c;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.neko-input-wrapper input:focus + .neko-ears::before,
+.neko-input-wrapper input:focus + .neko-ears::after {
+  opacity: 1;
+}
+
+.neko-input-wrapper input:focus + .neko-ears::before {
+  animation: ear-wiggle 0.8s ease-in-out;
+}
+
+.neko-ears::before,
+.neko-ears::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  transform-origin: bottom center;
+}
+
+/* 左耳 - 少し内側に傾ける */
+.neko-ears::before {
+  left: 25px;
+  border-left: 12px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 16px solid #fb923c;
+  transform: rotate(-10deg);
+  
+  /* 耳の内側（ピンク） */
+  box-shadow: 
+    inset -3px -4px 0 #ff8fa3,
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 右耳 - 少し内側に傾ける */
+.neko-ears::after {
+  right: 25px;
+  border-left: 6px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 16px solid #fb923c;
+  transform: rotate(10deg);
+  
+  /* 耳の内側（ピンク） */
+  box-shadow: 
+    inset 3px -4px 0 #ff8fa3,
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* より可愛いアニメーション */
+@keyframes ear-wiggle {
+  0% { 
+    transform: rotate(-10deg) scale(1);
+  }
+  15% { 
+    transform: rotate(-15deg) scale(1.05);
+  }
+  30% { 
+    transform: rotate(-5deg) scale(1.02);
+  }
+  45% { 
+    transform: rotate(-12deg) scale(1.08);
+  }
+  60% { 
+    transform: rotate(-8deg) scale(1.02);
+  }
+  75% { 
+    transform: rotate(-10deg) scale(1.05);
+  }
+  100% { 
+    transform: rotate(-10deg) scale(1);
+  }
+}
+
+/* 右耳用のアニメーション */
+@keyframes ear-wiggle-right {
+  0% { 
+    transform: rotate(10deg) scale(1);
+  }
+  15% { 
+    transform: rotate(15deg) scale(1.05);
+  }
+  30% { 
+    transform: rotate(5deg) scale(1.02);
+  }
+  45% { 
+    transform: rotate(12deg) scale(1.08);
+  }
+  60% { 
+    transform: rotate(8deg) scale(1.02);
+  }
+  75% { 
+    transform: rotate(10deg) scale(1.05);
+  }
+  100% { 
+    transform: rotate(10deg) scale(1);
+  }
+}
+
+/* フォーカス時に右耳は専用アニメーション */
+.neko-input-wrapper input:focus + .neko-ears::after {
+  animation: ear-wiggle-right 0.8s ease-in-out;
+}
+
+/* 尻尾の追加 */
+.neko-tail {
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 12px;
+  background: linear-gradient(45deg, #fb923c 0%, #f97316 100%);
+  border-radius: 20px 8px 8px 4px;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  transform-origin: left center;
+  
+  /* 尻尾の先端を細くする */
+  clip-path: polygon(0% 20%, 100% 0%, 100% 40%, 95% 50%, 100% 60%, 100% 100%, 0% 80%);
+  
+  /* 影で立体感 */
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* フォーカス時に尻尾を表示 */
+.neko-input-wrapper input:focus ~ .neko-tail {
+  opacity: 1;
+  animation: tail-wag-input 1.2s ease-in-out infinite;
+}
+
+/* 尻尾のフリフリアニメーション */
+@keyframes tail-wag-input {
+  0%, 100% { 
+    transform: translateY(-50%) rotate(-5deg) scaleY(1);
+  }
+  25% { 
+    transform: translateY(-45%) rotate(10deg) scaleY(1.05);
+  }
+  50% { 
+    transform: translateY(-50%) rotate(-8deg) scaleY(1.02);
+  }
+  75% { 
+    transform: translateY(-55%) rotate(12deg) scaleY(1.08);
+  }
+}
