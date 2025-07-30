@@ -1,0 +1,62 @@
+# Development files
+demo/
+vite.config.js
+postcss.config.js
+tailwind.config.js
+
+# Documentation and examples
+*.md
+!README.md
+
+# Development dependencies
+node_modules/
+.vscode/
+.idea/
+
+# Build and development tools
+.git/
+.gitignore
+.npmignore
+
+# Environment and config files
+.env*
+mise.toml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+logs/
+
+# Test files
+test/
+tests/
+__tests__/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# IDE files
+*.swp
+*.swo
+*~
+
+# Yarn files
+yarn.lock
+yarn-error.log
+
+# Package lock files (let users choose their package manager)
+package-lock.json
+pnpm-lock.yaml

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neko UI - 猫テーマUIコンポーネントライブラリ</title>
+  <link href="./style.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-neko-cream to-neko-pink min-h-screen">
+  <div class="container mx-auto p-8">
+    <header class="text-center mb-12">
+      <h1 class="text-5xl font-bold text-neko-black mb-4">🐱 Neko UI</h1>
+      <p class="text-xl text-neko-brown">猫をテーマにした可愛いUIコンポーネントライブラリ</p>
+    </header>
+
+    <main class="space-y-12">
+      <!-- NekoButton セクション -->
+      <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-bold text-neko-black mb-6">🐾 NekoButton</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="text-center">
+            <button class="btn-neko">通常のボタン</button>
+            <p class="mt-2 text-sm text-neko-gray">基本の.btn-nekoクラス</p>
+          </div>
+          <div class="text-center">
+            <button class="btn-neko animate-tail-wag">しっぽフリフリ</button>
+            <p class="mt-2 text-sm text-neko-gray">.animate-tail-wag付き</p>
+          </div>
+          <div class="text-center">
+            <button class="btn-neko animate-purr">ゴロゴロ</button>
+            <p class="mt-2 text-sm text-neko-gray">.animate-purr付き</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 猫種別ボタン セクション -->
+      <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-bold text-neko-black mb-6">🐱 猫種別ボタン</h2>
+        <p class="text-neko-gray mb-8 text-center">様々な猫の種類をテーマにしたボタンバリエーション</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="text-center">
+            <button class="btn-neko btn-neko-tuxedo">🤍 ハチワレ</button>
+            <p class="mt-2 text-sm text-neko-gray">.btn-neko-tuxedo</p>
+            <p class="text-xs text-neko-gray">白ベース + 黒模様</p>
+          </div>
+          <div class="text-center">
+            <button class="btn-neko btn-neko-orange">🧡 茶トラ</button>
+            <p class="mt-2 text-sm text-neko-gray">.btn-neko-orange</p>
+            <p class="text-xs text-neko-gray">オレンジ縞模様</p>
+          </div>
+          <div class="text-center">
+            <button class="btn-neko btn-neko-gray">🩶 グレー</button>
+            <p class="mt-2 text-sm text-neko-gray">.btn-neko-gray</p>
+            <p class="text-xs text-neko-gray">グレー縞模様</p>
+          </div>
+          <div class="text-center">
+            <button class="btn-neko btn-neko-calico">🎨 三毛猫</button>
+            <p class="mt-2 text-sm text-neko-gray">.btn-neko-calico</p>
+            <p class="text-xs text-neko-gray">白 + オレンジ + 黒</p>
+          </div>
+          <div class="text-center">
+            <button class="btn-neko btn-neko-black">🖤 黒猫</button>
+            <p class="mt-2 text-sm text-neko-gray">.btn-neko-black</p>
+            <p class="text-xs text-neko-gray">真っ黒 + 光沢</p>
+          </div>
+          <div class="text-center">
+            <button class="btn-neko btn-neko-white">🤍 白猫</button>
+            <p class="mt-2 text-sm text-neko-gray">.btn-neko-white</p>
+            <p class="text-xs text-neko-gray">純白 + 影</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 猫パーツ セクション -->
+      <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-bold text-neko-black mb-6">🐾 猫パーツ</h2>
+        <p class="text-neko-gray mb-8 text-center">ボタンに猫らしいパーツを追加して更に可愛く</p>
+        
+        <!-- 尻尾パーツ -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-neko-black mb-4">🦘 尻尾パーツ (.btn-neko-tail)</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+            <div class="text-center">
+              <button class="btn-neko btn-neko-tail">基本の尻尾</button>
+              <p class="mt-2 text-sm text-neko-gray">ホバーで尻尾が揺れる</p>
+            </div>
+            <div class="text-center">
+              <button class="btn-neko btn-neko-orange btn-neko-tail">茶トラ + 尻尾</button>
+              <p class="mt-2 text-sm text-neko-gray">猫種 + 尻尾の組み合わせ</p>
+            </div>
+            <div class="text-center">
+              <button class="btn-neko btn-neko-black btn-neko-tail animate-tail-wag">黒猫 + 尻尾 + アニメ</button>
+              <p class="mt-2 text-sm text-neko-gray">全部盛り</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 肉球パーツ -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-neko-black mb-4">🐾 肉球パーツ</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+            <div class="text-center">
+              <h4 class="font-medium text-neko-gray mb-3">絵文字版 (.btn-neko-paws)</h4>
+              <div class="space-y-3">
+                <button class="btn-neko btn-neko-paws">基本の肉球</button>
+                <button class="btn-neko btn-neko-calico btn-neko-paws">三毛 + 肉球</button>
+              </div>
+              <p class="mt-2 text-xs text-neko-gray">クリックで肉球が拡大</p>
+            </div>
+            <div class="text-center">
+              <h4 class="font-medium text-neko-gray mb-3">CSS版 (.btn-neko-paws-css)</h4>
+              <div class="space-y-3">
+                <button class="btn-neko btn-neko-paws-css">CSS肉球</button>
+                <button class="btn-neko btn-neko-tuxedo btn-neko-paws-css">ハチワレ + CSS肉球</button>
+              </div>
+              <p class="mt-2 text-xs text-neko-gray">絵文字が使えない環境向け</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 組み合わせ例 -->
+        <div class="border-t border-neko-gray/20 pt-6">
+          <h3 class="text-xl font-semibold text-neko-black mb-4">✨ 組み合わせ例</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="text-center">
+              <button class="btn-neko btn-neko-white btn-neko-tail btn-neko-paws animate-purr">完全体白猫</button>
+              <p class="mt-2 text-sm text-neko-gray">白猫 + 尻尾 + 肉球 + ゴロゴロ</p>
+            </div>
+            <div class="text-center">
+              <button class="btn-neko btn-neko-gray btn-neko-tail btn-neko-paws-css animate-tail-wag">完全体グレー</button>
+              <p class="mt-2 text-sm text-neko-gray">グレー + 尻尾 + CSS肉球 + 尻尾フリフリ</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- カラーパレット セクション -->
+      <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-bold text-neko-black mb-6">🎨 カラーパレット</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="text-center">
+            <div class="w-16 h-16 bg-neko-pink rounded-paw mx-auto mb-2 shadow-md"></div>
+            <p class="text-sm font-medium">neko-pink</p>
+            <p class="text-xs text-neko-gray">#FFB6C1</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-neko-salmon rounded-paw mx-auto mb-2 shadow-md"></div>
+            <p class="text-sm font-medium">neko-salmon</p>
+            <p class="text-xs text-neko-gray">#FFA07A</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-neko-cream rounded-paw mx-auto mb-2 shadow-md"></div>
+            <p class="text-sm font-medium">neko-cream</p>
+            <p class="text-xs text-neko-gray">#FFF8DC</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-neko-brown rounded-paw mx-auto mb-2 shadow-md"></div>
+            <p class="text-sm font-medium">neko-brown</p>
+            <p class="text-xs text-neko-gray">#D2B48C</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-neko-gray rounded-paw mx-auto mb-2 shadow-md"></div>
+            <p class="text-sm font-medium">neko-gray</p>
+            <p class="text-xs text-neko-gray">#A9A9A9</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-neko-black rounded-paw mx-auto mb-2 shadow-md"></div>
+            <p class="text-sm font-medium">neko-black</p>
+            <p class="text-xs text-neko-gray">#2F2F2F</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 使用例 セクション -->
+      <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-bold text-neko-black mb-6">📝 使用例</h2>
+        <div class="bg-neko-black text-neko-cream rounded-lg p-4 font-mono text-sm overflow-x-auto">
+          <pre><code>&lt;!-- 基本のNekoButton --&gt;
+&lt;button class="btn-neko"&gt;クリックしてね&lt;/button&gt;
+
+&lt;!-- 猫種別ボタン --&gt;
+&lt;button class="btn-neko btn-neko-tuxedo"&gt;ハチワレ&lt;/button&gt;
+&lt;button class="btn-neko btn-neko-orange"&gt;茶トラ&lt;/button&gt;
+&lt;button class="btn-neko btn-neko-gray"&gt;グレー&lt;/button&gt;
+&lt;button class="btn-neko btn-neko-calico"&gt;三毛猫&lt;/button&gt;
+&lt;button class="btn-neko btn-neko-black"&gt;黒猫&lt;/button&gt;
+&lt;button class="btn-neko btn-neko-white"&gt;白猫&lt;/button&gt;
+
+&lt;!-- 猫パーツ付き --&gt;
+&lt;button class="btn-neko btn-neko-tail"&gt;尻尾付き&lt;/button&gt;
+&lt;button class="btn-neko btn-neko-paws"&gt;肉球付き&lt;/button&gt;
+&lt;button class="btn-neko btn-neko-paws-css"&gt;CSS肉球&lt;/button&gt;
+
+&lt;!-- 組み合わせ --&gt;
+&lt;button class="btn-neko btn-neko-orange btn-neko-tail animate-tail-wag"&gt;
+  茶トラ + 尻尾 + しっぽフリフリ
+&lt;/button&gt;
+&lt;button class="btn-neko btn-neko-white btn-neko-paws animate-purr"&gt;
+  白猫 + 肉球 + ゴロゴロ
+&lt;/button&gt;
+
+&lt;!-- カスタムカラー --&gt;
+&lt;div class="bg-neko-pink text-neko-black p-4 rounded-paw"&gt;
+  猫色の背景
+&lt;/div&gt;</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer class="text-center mt-12 text-neko-brown">
+      <p>🐾 Made with love for cat lovers 🐾</p>
+    </footer>
+  </div>
+</body>
+</html>
