@@ -322,34 +322,3 @@ npm test
 ## 📝 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
-
-## 🐾 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Adding New Cat Breeds
-
-To add a new cat breed:
-
-1. Add the breed colors to the TailwindCSS plugin
-2. Create the corresponding CSS classes
-3. Update the documentation
-4. Test across all components
-
-## 🙏 Acknowledgments
-
-- Inspired by the internet's love of cats and cardboard boxes
-- Built with love for the developer community
-- Special thanks to all cat lovers who tested this library
-
-## 📞 Support
-
-- 📚 [Documentation](https://github.com/Hitoshi-Noborikawa/nyacat-ui)
-- 🐛 [Issue Tracker](https://github.com/Hitoshi-Noborikawa/nyacat-ui/issues)
-- 💬 [Discussions](https://github.com/Hitoshi-Noborikawa/nyacat-ui/discussions)
-
----
-
-Made with 🐾 and ❤️ by cat lovers, for cat lovers.
-
-*"In ancient times cats were worshipped as gods; they have not forgotten this."* - Terry Pratchett
