@@ -1,0 +1,711 @@
+/*
+ * Nyacat UI - TailwindCSS v4 専用版
+ * A delightful cat-themed UI component library for TailwindCSS v4
+ */
+
+@theme {
+  /* Nyacat カスタムカラーパレット */
+  --color-nyacat-pink: #FFB6C1;
+  --color-nyacat-salmon: #FFA07A;
+  --color-nyacat-cream: #FFF8DC;
+  --color-nyacat-brown: #D2B48C;
+  --color-nyacat-gray: #A9A9A9;
+  --color-nyacat-black: #2F2F2F;
+  
+  /* Tuxedo cat colors */
+  --color-nyacat-tuxedo-base: #FFFFFF;
+  --color-nyacat-tuxedo-accent: #2F2F2F;
+  
+  /* Orange tabby colors */
+  --color-nyacat-orange-base: #FF8C00;
+  --color-nyacat-orange-stripe: #FFA500;
+  
+  /* Calico colors */
+  --color-nyacat-calico-white: #FFFFFF;
+  --color-nyacat-calico-orange: #FF8C00;
+  --color-nyacat-calico-black: #2F2F2F;
+  
+  /* カスタムスペーシング */
+  --spacing-paw: 0.75rem;
+  --spacing-whisker: 0.25rem;
+  
+  /* カスタムボーダーラディウス */
+  --radius-paw: 1rem;
+  --radius-ear: 50% 50% 0 0;
+  
+  /* カスタムアニメーション */
+  --animate-nyacat-spin: nyacat-spin 2s linear infinite;
+  --animate-nyacat-groom: nyacat-groom 3s ease-in-out infinite;
+  --animate-tail-wag: tail-wag 1s ease-in-out infinite;
+  --animate-purr: purr 2s ease-in-out infinite;
+  --animate-paw-bounce: paw-bounce 0.3s ease-in-out;
+  --animate-paw-print: paw-print 0.2s ease-out;
+  --animate-ear-wiggle: ear-wiggle 0.8s ease-in-out;
+  --animate-ear-wiggle-right: ear-wiggle-right 0.8s ease-in-out;
+  --animate-tail-wag-input: tail-wag-input 1.2s ease-in-out infinite;
+}
+
+/* キーフレームアニメーション */
+@keyframes nyacat-spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes nyacat-groom {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  25% { transform: translate(-50%, -60%) scale(0.9) rotate(-10deg); }
+  50% { transform: translate(-50%, -40%) scale(1.1) rotate(5deg); }
+  75% { transform: translate(-50%, -50%) scale(0.95) rotate(-5deg); }
+}
+
+@keyframes paw-bounce {
+  0%, 100% { transform: scale(1.05); }
+  50% { transform: scale(1.1) rotate(-2deg); }
+}
+
+@keyframes paw-print {
+  0% { transform: scale(0.98); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(0.98); }
+}
+
+@keyframes tail-wag {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  75% { transform: rotate(-10deg); }
+}
+
+@keyframes purr {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes ear-wiggle {
+  0% { transform: rotate(-10deg) scale(1); }
+  15% { transform: rotate(-15deg) scale(1.05); }
+  30% { transform: rotate(-5deg) scale(1.02); }
+  45% { transform: rotate(-12deg) scale(1.08); }
+  60% { transform: rotate(-8deg) scale(1.02); }
+  75% { transform: rotate(-10deg) scale(1.05); }
+  100% { transform: rotate(-10deg) scale(1); }
+}
+
+@keyframes ear-wiggle-right {
+  0% { transform: rotate(10deg) scale(1); }
+  15% { transform: rotate(15deg) scale(1.05); }
+  30% { transform: rotate(5deg) scale(1.02); }
+  45% { transform: rotate(12deg) scale(1.08); }
+  60% { transform: rotate(8deg) scale(1.02); }
+  75% { transform: rotate(10deg) scale(1.05); }
+  100% { transform: rotate(10deg) scale(1); }
+}
+
+@keyframes tail-wag-input {
+  0%, 100% { transform: translateY(-50%) rotate(-5deg) scaleY(1); }
+  25% { transform: translateY(-45%) rotate(10deg) scaleY(1.05); }
+  50% { transform: translateY(-50%) rotate(-8deg) scaleY(1.02); }
+  75% { transform: translateY(-55%) rotate(12deg) scaleY(1.08); }
+}
+
+/* =================================
+   NyacatButton コンポーネント
+   ================================= */
+
+.btn-nyacat {
+  @apply px-6 py-3 font-medium transition-all duration-200 cursor-pointer;
+  background: linear-gradient(135deg, var(--color-nyacat-pink), var(--color-nyacat-salmon));
+  color: var(--color-nyacat-black);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-paw);
+}
+
+.btn-nyacat:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-nyacat-pink) 40%, transparent);
+  animation: var(--animate-paw-bounce);
+}
+
+.btn-nyacat:active {
+  transform: scale(0.98);
+  animation: var(--animate-paw-print);
+}
+
+.btn-nyacat::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: color-mix(in srgb, white 30%, transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.btn-nyacat:hover::before {
+  width: 100px;
+  height: 100px;
+}
+
+/* 猫種バリエーション */
+
+/* ハチワレ猫 */
+.btn-nyacat-tuxedo {
+  @apply border-2 font-medium;
+  background: linear-gradient(135deg, var(--color-nyacat-tuxedo-base) 0%, var(--color-nyacat-tuxedo-base) 40%, var(--color-nyacat-tuxedo-accent) 40%, var(--color-nyacat-tuxedo-accent) 60%, var(--color-nyacat-tuxedo-base) 60%, var(--color-nyacat-tuxedo-base) 100%);
+  color: black;
+  border-color: var(--color-nyacat-tuxedo-accent);
+}
+
+.btn-nyacat-tuxedo:hover {
+  background: linear-gradient(135deg, #f9fafb 0%, #f9fafb 40%, #111827 40%, #111827 60%, #f9fafb 60%, #f9fafb 100%);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-nyacat-tuxedo-accent) 40%, transparent);
+  transform: scale(1.05);
+}
+
+/* 茶トラ猫 */
+.btn-nyacat-orange {
+  background: repeating-linear-gradient(45deg, var(--color-nyacat-orange-base), var(--color-nyacat-orange-base) 8px, var(--color-nyacat-orange-stripe) 8px, var(--color-nyacat-orange-stripe) 16px);
+  color: white;
+}
+
+.btn-nyacat-orange:hover {
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-nyacat-orange-base) 40%, transparent);
+}
+
+/* グレー猫 */
+.btn-nyacat-gray {
+  background: repeating-linear-gradient(90deg, var(--color-nyacat-gray), var(--color-nyacat-gray) 6px, #808080 6px, #808080 12px);
+  color: white;
+}
+
+.btn-nyacat-gray:hover {
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-nyacat-gray) 40%, transparent);
+}
+
+/* 三毛猫 */
+.btn-nyacat-calico {
+  @apply border-2 font-medium;
+  background: 
+    radial-gradient(ellipse at 20% 30%, #ea580c 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, var(--color-nyacat-calico-black) 0%, transparent 40%),
+    radial-gradient(ellipse at 40% 80%, #f97316 0%, transparent 30%),
+    radial-gradient(ellipse at 80% 20%, var(--color-nyacat-calico-black) 0%, transparent 25%),
+    var(--color-nyacat-calico-white);
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.btn-nyacat-calico:hover {
+  background: 
+    radial-gradient(ellipse at 20% 30%, #dc2626 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, #111827 0%, transparent 40%),
+    radial-gradient(ellipse at 40% 80%, #ea580c 0%, transparent 30%),
+    radial-gradient(ellipse at 80% 20%, #111827 0%, transparent 25%),
+    #f9fafb;
+  box-shadow: 0 8px 20px color-mix(in srgb, #ea580c 30%, transparent);
+  transform: scale(1.05);
+}
+
+/* 黒猫 */
+.btn-nyacat-black {
+  background: linear-gradient(135deg, var(--color-nyacat-black), #1a1a1a);
+  color: white;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
+}
+
+.btn-nyacat-black:hover {
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-nyacat-black) 60%, transparent), inset 0 1px 0 color-mix(in srgb, white 20%, transparent);
+  background: linear-gradient(135deg, #3a3a3a, var(--color-nyacat-black));
+}
+
+/* 白猫 */
+.btn-nyacat-white {
+  background: linear-gradient(135deg, white, #f5f5f5);
+  color: var(--color-nyacat-black);
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px color-mix(in srgb, black 10%, transparent);
+}
+
+.btn-nyacat-white:hover {
+  box-shadow: 0 8px 20px color-mix(in srgb, white 80%, transparent), 0 2px 8px color-mix(in srgb, black 15%, transparent);
+  background: linear-gradient(135deg, white, #fafafa);
+}
+
+/* 猫パーツ */
+
+/* 尻尾パーツ */
+.btn-nyacat-tail {
+  position: relative;
+}
+
+.btn-nyacat-tail::after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  width: 30px;
+  height: 8px;
+  background: currentColor;
+  border-radius: 50px 50px 50px 20px;
+  opacity: 0.8;
+  transform: translateY(-50%) rotate(-15deg);
+  transition: transform 0.3s ease;
+}
+
+.btn-nyacat-tail:hover::after {
+  transform: translateY(-50%) rotate(15deg);
+}
+
+/* 肉球パーツ（絵文字版） */
+.btn-nyacat-paws {
+  position: relative;
+}
+
+.btn-nyacat-paws::before {
+  content: "🐾";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  opacity: 0.6;
+  transition: transform 0.1s ease;
+}
+
+.btn-nyacat-paws:active::before {
+  transform: translateX(-50%) scale(1.3);
+}
+
+/* 肉球パーツ（CSS版） */
+.btn-nyacat-paws-css {
+  position: relative;
+}
+
+.btn-nyacat-paws-css::before {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 16px;
+  background: 
+    radial-gradient(circle at 30% 30%, currentColor 3px, transparent 3px),
+    radial-gradient(circle at 70% 30%, currentColor 3px, transparent 3px),
+    radial-gradient(circle at 50% 70%, currentColor 6px, transparent 6px);
+  opacity: 0.5;
+  transition: transform 0.1s ease;
+}
+
+.btn-nyacat-paws-css:active::before {
+  transform: translateX(-50%) scale(1.3);
+}
+
+/* =================================
+   NyacatInput コンポーネント
+   ================================= */
+
+.nyacat-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.nyacat-input-wrapper input,
+.nyacat-input-wrapper select,
+.nyacat-input-wrapper textarea {
+  @apply w-full px-4 py-2 border-2 border-gray-300 rounded-lg;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.nyacat-input-wrapper input:focus,
+.nyacat-input-wrapper select:focus,
+.nyacat-input-wrapper textarea:focus {
+  border-color: #fb923c;
+  box-shadow: 0 4px 6px -1px color-mix(in srgb, black 10%, transparent), 0 2px 4px -1px color-mix(in srgb, black 6%, transparent);
+}
+
+/* 猫耳 */
+.nyacat-ears::before,
+.nyacat-ears::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  transform-origin: bottom center;
+}
+
+.nyacat-ears::before {
+  left: 25px;
+  border-left: 12px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 16px solid #fb923c;
+  transform: rotate(-10deg);
+  box-shadow: inset -3px -4px 0 #ff8fa3, 0 2px 4px color-mix(in srgb, black 10%, transparent);
+}
+
+.nyacat-ears::after {
+  right: 25px;
+  border-left: 6px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 16px solid #fb923c;
+  transform: rotate(10deg);
+  box-shadow: inset 3px -4px 0 #ff8fa3, 0 2px 4px color-mix(in srgb, black 10%, transparent);
+}
+
+/* 尻尾 */
+.nyacat-tail {
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 12px;
+  background: linear-gradient(45deg, #fb923c 0%, #f97316 100%);
+  border-radius: 20px 8px 8px 4px;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  transform-origin: left center;
+  clip-path: polygon(0% 20%, 100% 0%, 100% 40%, 95% 50%, 100% 60%, 100% 100%, 0% 80%);
+  box-shadow: 0 2px 4px color-mix(in srgb, black 10%, transparent), inset 0 -2px 0 color-mix(in srgb, black 10%, transparent);
+}
+
+/* フォーカス時の猫パーツ表示 */
+.nyacat-input-wrapper input:focus ~ .nyacat-ears::before,
+.nyacat-input-wrapper input:focus ~ .nyacat-ears::after,
+.nyacat-input-wrapper select:focus ~ .nyacat-ears::before,
+.nyacat-input-wrapper select:focus ~ .nyacat-ears::after,
+.nyacat-input-wrapper textarea:focus ~ .nyacat-ears::before,
+.nyacat-input-wrapper textarea:focus ~ .nyacat-ears::after {
+  opacity: 1;
+}
+
+.nyacat-input-wrapper input:focus ~ .nyacat-ears::before,
+.nyacat-input-wrapper select:focus ~ .nyacat-ears::before,
+.nyacat-input-wrapper textarea:focus ~ .nyacat-ears::before {
+  animation: var(--animate-ear-wiggle);
+}
+
+.nyacat-input-wrapper input:focus ~ .nyacat-ears::after,
+.nyacat-input-wrapper select:focus ~ .nyacat-ears::after,
+.nyacat-input-wrapper textarea:focus ~ .nyacat-ears::after {
+  animation: var(--animate-ear-wiggle-right);
+}
+
+.nyacat-input-wrapper input:focus ~ .nyacat-tail,
+.nyacat-input-wrapper select:focus ~ .nyacat-tail,
+.nyacat-input-wrapper textarea:focus ~ .nyacat-tail {
+  opacity: 1;
+  animation: var(--animate-tail-wag-input);
+}
+
+/* Input状態 */
+.nyacat-input-error input,
+.nyacat-input-error select,
+.nyacat-input-error textarea {
+  border-color: #f87171 !important;
+}
+
+.nyacat-input-error::before {
+  content: "😾";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.nyacat-input-success input,
+.nyacat-input-success select,
+.nyacat-input-success textarea {
+  border-color: #4ade80 !important;
+}
+
+.nyacat-input-success::before {
+  content: "😸";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* =================================
+   NyacatCard コンポーネント
+   ================================= */
+
+.card-nyacat {
+  @apply bg-white rounded-lg shadow-md border-2 border-gray-200 p-6 relative overflow-hidden transition-all duration-300 ease-in-out;
+  min-height: 200px;
+  
+  /* 段ボール箱のテクスチャ */
+  background: 
+    linear-gradient(90deg, #f5f5f0 0%, #f0f0eb 50%, #f5f5f0 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, color-mix(in srgb, black 3%, transparent) 2px, color-mix(in srgb, black 3%, transparent) 4px);
+}
+
+/* 箱の折り目ライン */
+.card-nyacat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background: color-mix(in srgb, black 10%, transparent);
+  transform: translateX(-50%);
+}
+
+/* 猫の顔（初期状態は隠れている） */
+.card-nyacat::after {
+  content: "🐱";
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 32px;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  opacity: 0;
+}
+
+/* ホバー時に猫が箱から顔を出す */
+.card-nyacat:hover {
+  @apply shadow-lg;
+  transform: translateY(-2px);
+}
+
+.card-nyacat:hover::after {
+  top: 10px;
+  opacity: 1;
+}
+
+/* 猫種バリエーション */
+.card-nyacat-orange {
+  background: 
+    linear-gradient(90deg, #fff5e6 0%, #ffedd5 50%, #fff5e6 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, color-mix(in srgb, var(--color-nyacat-orange-base) 10%, transparent) 2px, color-mix(in srgb, var(--color-nyacat-orange-base) 10%, transparent) 4px);
+}
+
+.card-nyacat-orange::after {
+  color: var(--color-nyacat-orange-base);
+}
+
+.card-nyacat-tuxedo {
+  background: 
+    linear-gradient(90deg, #fafafa 0%, #f5f5f5 50%, #fafafa 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, color-mix(in srgb, black 5%, transparent) 2px, color-mix(in srgb, black 5%, transparent) 4px);
+}
+
+.card-nyacat-tuxedo::after {
+  background: linear-gradient(45deg, black 50%, white 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card-nyacat-gray {
+  background: 
+    linear-gradient(90deg, #f8f9fa 0%, #f1f3f4 50%, #f8f9fa 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, color-mix(in srgb, var(--color-nyacat-gray) 10%, transparent) 2px, color-mix(in srgb, var(--color-nyacat-gray) 10%, transparent) 4px);
+}
+
+.card-nyacat-gray::after {
+  color: #6b7280;
+}
+
+.card-nyacat-calico {
+  background: 
+    radial-gradient(ellipse at 20% 30%, color-mix(in srgb, var(--color-nyacat-orange-base) 10%, transparent) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, color-mix(in srgb, black 8%, transparent) 0%, transparent 40%),
+    linear-gradient(90deg, #fff5e6 0%, #ffedd5 50%, #fff5e6 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, color-mix(in srgb, var(--color-nyacat-orange-base) 5%, transparent) 2px, color-mix(in srgb, var(--color-nyacat-orange-base) 5%, transparent) 4px);
+}
+
+.card-nyacat-calico::after {
+  background: linear-gradient(45deg, var(--color-nyacat-orange-base) 33%, black 33%, black 66%, var(--color-nyacat-orange-base) 66%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card-nyacat-black {
+  background: 
+    linear-gradient(90deg, #f9fafb 0%, #f3f4f6 50%, #f9fafb 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, color-mix(in srgb, black 8%, transparent) 2px, color-mix(in srgb, black 8%, transparent) 4px);
+}
+
+.card-nyacat-black::after {
+  color: #1f2937;
+}
+
+.card-nyacat-white {
+  background: 
+    linear-gradient(90deg, white 0%, #fafafa 50%, white 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, color-mix(in srgb, black 2%, transparent) 2px, color-mix(in srgb, black 2%, transparent) 4px);
+  border-color: #e5e7eb;
+}
+
+.card-nyacat-white::after {
+  color: white;
+  text-shadow: 1px 1px 2px color-mix(in srgb, black 30%, transparent);
+}
+
+/* サイズバリエーション */
+.card-nyacat-sm {
+  @apply p-4;
+  min-height: 120px;
+}
+
+.card-nyacat-sm::after {
+  font-size: 24px;
+}
+
+.card-nyacat-lg {
+  @apply p-8;
+  min-height: 280px;
+}
+
+.card-nyacat-lg::after {
+  font-size: 48px;
+}
+
+/* 特殊バリエーション */
+.card-nyacat-peek::after {
+  top: -10px;
+  opacity: 0.6;
+}
+
+.card-nyacat-peek:hover::after {
+  top: 15px;
+  opacity: 1;
+  transform: translateX(-50%) scale(1.1);
+}
+
+.card-nyacat-family::after {
+  content: "🐱🐱🐱";
+  font-size: 20px;
+  letter-spacing: -8px;
+}
+
+.card-nyacat-family:hover::after {
+  letter-spacing: 2px;
+  font-size: 24px;
+}
+
+/* =================================
+   NyacatLoading コンポーネント
+   ================================= */
+
+.loading-nyacat {
+  @apply inline-block relative;
+  width: 40px;
+  height: 40px;
+}
+
+.loading-nyacat::before {
+  content: "🐱";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  animation: var(--animate-nyacat-spin);
+}
+
+.loading-nyacat-groom {
+  @apply inline-block relative;
+  width: 40px;
+  height: 40px;
+}
+
+.loading-nyacat-groom::before {
+  content: "🐱";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  animation: var(--animate-nyacat-groom);
+}
+
+/* サイズバリエーション */
+.loading-nyacat-sm {
+  width: 24px;
+  height: 24px;
+}
+
+.loading-nyacat-sm::before {
+  font-size: 16px;
+}
+
+.loading-nyacat-lg {
+  width: 60px;
+  height: 60px;
+}
+
+.loading-nyacat-lg::before {
+  font-size: 36px;
+}
+
+.loading-nyacat-xl {
+  width: 80px;
+  height: 80px;
+}
+
+.loading-nyacat-xl::before {
+  font-size: 48px;
+}
+
+/* =================================
+   ユーティリティクラス
+   ================================= */
+
+/* アニメーション */
+.animate-tail-wag { animation: var(--animate-tail-wag); }
+.animate-purr { animation: var(--animate-purr); }
+
+/* カラー */
+.text-nyacat-pink { color: var(--color-nyacat-pink); }
+.text-nyacat-salmon { color: var(--color-nyacat-salmon); }
+.text-nyacat-cream { color: var(--color-nyacat-cream); }
+.text-nyacat-brown { color: var(--color-nyacat-brown); }
+.text-nyacat-gray { color: var(--color-nyacat-gray); }
+.text-nyacat-black { color: var(--color-nyacat-black); }
+
+.bg-nyacat-pink { background-color: var(--color-nyacat-pink); }
+.bg-nyacat-salmon { background-color: var(--color-nyacat-salmon); }
+.bg-nyacat-cream { background-color: var(--color-nyacat-cream); }
+.bg-nyacat-brown { background-color: var(--color-nyacat-brown); }
+.bg-nyacat-gray { background-color: var(--color-nyacat-gray); }
+.bg-nyacat-black { background-color: var(--color-nyacat-black); }
+
+.border-nyacat-pink { border-color: var(--color-nyacat-pink); }
+.border-nyacat-salmon { border-color: var(--color-nyacat-salmon); }
+.border-nyacat-cream { border-color: var(--color-nyacat-cream); }
+.border-nyacat-brown { border-color: var(--color-nyacat-brown); }
+.border-nyacat-gray { border-color: var(--color-nyacat-gray); }
+.border-nyacat-black { border-color: var(--color-nyacat-black); }
+
+/* ボーダーラディウス */
+.rounded-paw { border-radius: var(--radius-paw); }
+.rounded-ear { border-radius: var(--radius-ear); }
+
+/* スペーシング */
+.p-paw { padding: var(--spacing-paw); }
+.m-paw { margin: var(--spacing-paw); }
+.p-whisker { padding: var(--spacing-whisker); }
+.m-whisker { margin: var(--spacing-whisker); }

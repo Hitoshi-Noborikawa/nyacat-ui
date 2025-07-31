@@ -1,20 +1,25 @@
-# 🐱 Nyacat UI
+# 🐱 Nyacat UI v1.0
 
-A delightful cat-themed UI component library built with TailwindCSS. Features adorable cat animations, cardboard box modals, and pawsome interactions that will make your users purr with joy!
+A delightful cat-themed UI component library built **exclusively for TailwindCSS v4**. Features adorable cat animations, cardboard box modals, and pawsome interactions that will make your users purr with joy!
+
+✨ **Native TailwindCSS v4 support** - Built using `@theme`, `color-mix()`, and modern CSS features!
 
 [![npm version](https://badge.fury.io/js/nyacat-ui.svg)](https://badge.fury.io/js/nyacat-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TailwindCSS v4](https://img.shields.io/badge/TailwindCSS-v4.0+-blue.svg)](https://tailwindcss.com/)
 
 ## ✨ Features
 
 - 🐾 **Cat-themed Components**: Buttons, cards, inputs, loading animations, and modals
 - 📦 **Cardboard Box Modals**: Cats peek out from boxes with delightful animations
 - 🎨 **Multiple Cat Breeds**: Orange tabby, tuxedo, gray, calico, black, and white cats
-- ⚡ **Framework Agnostic**: Works with React, Vue, Angular, Rails, and vanilla JavaScript
+- ⚡ **Framework Agnostic**: Works with React, Vue, Angular, Rails 8, and vanilla JavaScript
 - 🎭 **Web Components**: Modern, reusable components with Shadow DOM
-- 🎯 **TailwindCSS Plugin**: Seamless integration with your existing TailwindCSS setup
-- 📱 **Responsive**: Mobile-friendly designs
-- 🌟 **Animations**: Smooth CSS animations with cat-like behaviors
+- 🎯 **TailwindCSS v4 Native**: Built with `@theme`, CSS variables, and `color-mix()`
+- 📱 **Responsive**: Mobile-friendly designs optimized for modern browsers
+- 🌟 **Modern CSS**: Uses cutting-edge CSS features like `color-mix()` and CSS custom properties
+- 💫 **Performance**: Lightweight and optimized for TailwindCSS v4's new architecture
+- 🚀 **Rails 8 Ready**: Perfect for Rails 8 applications with TailwindCSS v4
 
 ## 🚀 Quick Start
 
@@ -24,34 +29,21 @@ A delightful cat-themed UI component library built with TailwindCSS. Features ad
 npm install nyacat-ui
 ```
 
-### TailwindCSS Plugin Setup
+### TailwindCSS v4 Setup
 
-#### For TailwindCSS v3:
-
-Add Nyacat UI to your `tailwind.config.js`:
-
-```javascript
-import nyacatUI from 'nyacat-ui'
-
-export default {
-  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
-  plugins: [nyacatUI],
-}
-```
-
-#### For TailwindCSS v4 (Rails 8+):
-
-Import the v4-compatible CSS file in your main CSS file:
+Import Nyacat UI in your main CSS file (e.g., `app/assets/stylesheets/application.css` for Rails):
 
 ```css
-@import "nyacat-ui/v4";
+@import "nyacat-ui";
 ```
 
-Or in your application.css:
+Or using PostCSS import:
 
 ```css
-@import url('nyacat-ui/v4');
+@import url('nyacat-ui');
 ```
+
+**That's it!** No configuration needed - Nyacat UI uses TailwindCSS v4's native `@theme` and modern CSS features.
 
 ### Web Components (Recommended)
 
@@ -214,9 +206,32 @@ Nyacat UI supports multiple cat breed variations:
 
 ## 🌟 Framework Integration
 
+### Rails 8 + TailwindCSS v4
+
+Perfect for Rails 8 applications! Add to your `app/assets/stylesheets/application.css`:
+
+```css
+@import "tailwindcss";
+@import "nyacat-ui";
+```
+
+Then use in your ERB templates:
+
+```erb
+<button class="btn-nyacat btn-nyacat-orange">
+  Purr-fect Rails Button! 🐱
+</button>
+
+<div class="nyacat-input-wrapper">
+  <%= text_field_tag :search, nil, placeholder: "Focus for cat ears!" %>
+  <div class="nyacat-ears"></div>
+  <div class="nyacat-tail"></div>
+</div>
+```
+
 ### React
 ```jsx
-import 'nyacat-ui/dist/web-components.js';
+// Import CSS: @import "nyacat-ui";
 
 function App() {
   const handleOpenModal = () => {
