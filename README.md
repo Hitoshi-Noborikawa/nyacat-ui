@@ -21,15 +21,17 @@ A delightful cat-themed UI component library built with TailwindCSS. Features ad
 ### Installation
 
 ```bash
-npm install nyacat-ui
+npm install @nobonobosan/nyacat-ui
 ```
 
 ### TailwindCSS Plugin Setup
 
+#### For TailwindCSS v3:
+
 Add Nyacat UI to your `tailwind.config.js`:
 
 ```javascript
-import nyacatUI from 'nyacat-ui'
+import nyacatUI from '@nobonobosan/nyacat-ui'
 
 export default {
   content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
@@ -37,12 +39,26 @@ export default {
 }
 ```
 
+#### For TailwindCSS v4 (Rails 8+):
+
+Import the v4-compatible CSS file in your main CSS file:
+
+```css
+@import "@nobonobosan/@nobonobosan/nyacat-ui/v4";
+```
+
+Or in your application.css:
+
+```css
+@import url('@nobonobosan/@nobonobosan/nyacat-ui/v4');
+```
+
 ### Web Components (Recommended)
 
 For framework-agnostic usage, include the Web Components:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/nyacat-ui@latest/dist/web-components.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@nobonobosan/nyacat-ui@latest/dist/web-components.js"></script>
 ```
 
 ## 📖 Components
@@ -200,7 +216,7 @@ Nyacat UI supports multiple cat breed variations:
 
 ### React
 ```jsx
-import 'nyacat-ui/dist/web-components.js';
+import '@nobonobosan/@nobonobosan/nyacat-ui/dist/web-components.js';
 
 function App() {
   const handleOpenModal = () => {
@@ -236,7 +252,7 @@ function App() {
 </template>
 
 <script>
-import 'nyacat-ui/dist/web-components.js';
+import '@nobonobosan/nyacat-ui/dist/web-components.js';
 
 export default {
   methods: {
