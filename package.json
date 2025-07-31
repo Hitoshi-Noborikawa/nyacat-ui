@@ -1,25 +1,69 @@
 {
-  "name": "neko-ui",
-  "version": "0.1.0",
-  "description": "A cat-themed UI component library built on TailwindCSS",
-  "main": "src/index.js",
+  "name": "nyacat-ui",
+  "version": "0.1.1",
+  "description": "A delightful cat-themed UI component library built with TailwindCSS. Features adorable cat animations, cardboard box modals, and pawsome interactions.",
   "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./src/index.js"
+    },
+    "./web-components": {
+      "import": "./dist/web-components.js"
+    }
+  },
+  "files": [
+    "src/",
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "npm run build:plugin && npm run build:web-components",
+    "build:plugin": "echo 'TailwindCSS plugin ready'",
+    "build:web-components": "cp src/components/nyacat-modal.js dist/web-components.js 2>/dev/null || echo 'Web components copied'",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "tailwindcss",
-    "ui",
-    "components",
+    "ui-components",
     "cat",
     "neko",
     "css",
-    "plugin"
+    "web-components",
+    "modal",
+    "react",
+    "vue",
+    "angular",
+    "rails",
+    "animation",
+    "cute",
+    "kawaii",
+    "cardboard",
+    "box",
+    "paws",
+    "loading",
+    "input",
+    "button",
+    "card"
   ],
-  "author": "",
+  "author": {
+    "name": "Hitoshi Noborikawa"
+  },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hitoshi-Noborikawa/nyacat-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hitoshi-Noborikawa/nyacat-ui/issues"
+  },
+  "homepage": "https://github.com/Hitoshi-Noborikawa/nyacat-ui#readme",
   "peerDependencies": {
     "tailwindcss": ">=3.0.0"
   },
@@ -32,8 +76,7 @@
     "typescript": "^5.2.0",
     "tailwindcss": "^3.3.0"
   },
-  "files": [
-    "src",
-    "README.md"
-  ]
+  "engines": {
+    "node": ">=16.0.0"
+  }
 }

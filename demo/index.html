@@ -3,144 +3,442 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Neko UI - 猫テーマUIコンポーネントライブラリ</title>
+  <title>Nyacat UI - 猫テーマUIコンポーネントライブラリ</title>
   <link href="./style.css" rel="stylesheet">
+  <script type="module">
+    // Web Components版NyacatModal（埋め込み版）
+    class NyacatModal extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this.isOpen = false;
+        this.animationInProgress = false;
+      }
+
+      static get observedAttributes() {
+        return ['open', 'variant', 'size'];
+      }
+
+      connectedCallback() {
+        this.render();
+        this.setupEventListeners();
+      }
+
+      attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'open') {
+          if (newValue !== null && !this.isOpen) {
+            this.show();
+          } else if (newValue === null && this.isOpen) {
+            this.hide();
+          }
+        } else if (name === 'variant' || name === 'size') {
+          this.render();
+        }
+      }
+
+      get variant() {
+        return this.getAttribute('variant') || 'default';
+      }
+
+      get size() {
+        return this.getAttribute('size') || 'default';
+      }
+
+      render() {
+        const variant = this.variant;
+        const size = this.size;
+        
+        // 猫の色を決定
+        const catColors = {
+          'orange': '#ff8c00',
+          'tuxedo': 'linear-gradient(45deg, #000 50%, #fff 50%)',
+          'gray': '#6b7280',
+          'black': '#1f2937',
+          'white': '#ffffff',
+          'default': '#333'
+        };
+
+        const catColor = catColors[variant] || catColors.default;
+        const isGradient = catColor.includes('gradient');
+        
+        // サイズ設定
+        const sizes = {
+          'sm': { width: '300px', minHeight: '200px', padding: '1.5rem', catSize: '32px' },
+          'lg': { width: '700px', minHeight: '400px', padding: '3rem', catSize: '64px' },
+          'default': { width: '500px', minHeight: '300px', padding: '2rem', catSize: '48px' }
+        };
+
+        const sizeConfig = sizes[size] || sizes.default;
+
+        this.shadowRoot.innerHTML = `
+          <style>
+            :host {
+              display: none;
+              position: fixed;
+              inset: 0;
+              z-index: 1000;
+            }
+
+            :host([open]) {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .overlay {
+              position: absolute;
+              inset: 0;
+              background: rgba(0, 0, 0, 0.6);
+              opacity: 0;
+              transition: opacity 0.3s ease-in-out;
+              cursor: pointer;
+            }
+
+            .overlay.show {
+              opacity: 1;
+            }
+
+            .box {
+              position: relative;
+              max-width: 90vw;
+              width: ${sizeConfig.width};
+              min-height: ${sizeConfig.minHeight};
+              margin: 2rem;
+              cursor: default;
+              transform: scale(0.8) rotate(-2deg);
+              opacity: 0;
+              transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+              
+              background: 
+                linear-gradient(90deg, #f5f5f0 0%, #f0f0eb 50%, #f5f5f0 100%), 
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+              border: 2px solid #d4d4aa;
+              border-radius: 8px;
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+              padding: ${sizeConfig.padding};
+            }
+
+            .box::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 50%;
+              width: 1px;
+              height: 100%;
+              background: rgba(0,0,0,0.1);
+              transform: translateX(-50%);
+            }
+
+            .box.show {
+              transform: scale(1) rotate(0deg);
+              opacity: 1;
+            }
+
+            .cat {
+              position: absolute;
+              top: -20px;
+              left: 50%;
+              transform: translate(-50%, 20px) scale(0.8);
+              font-size: ${sizeConfig.catSize};
+              opacity: 0;
+              z-index: 10;
+              pointer-events: none;
+              user-select: none;
+              transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+              
+              ${isGradient ? `
+                background: ${catColor};
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+              ` : `
+                color: ${catColor};
+              `}
+              
+              ${variant === 'white' ? 'text-shadow: 2px 2px 4px rgba(0,0,0,0.5);' : ''}
+            }
+
+            .cat.show {
+              transform: translate(-50%, -5px) scale(1);
+              opacity: 1;
+            }
+
+            .cat.blink {
+              animation: blink 3s infinite;
+            }
+
+            @keyframes blink {
+              0%, 90%, 100% { opacity: 1; }
+              95% { opacity: 0.3; }
+            }
+
+            .content {
+              position: relative;
+              z-index: 5;
+              margin-top: 1rem;
+            }
+
+            :host(.closing) .overlay {
+              opacity: 0;
+            }
+
+            :host(.closing) .box {
+              transform: scale(0.8) rotate(2deg);
+              opacity: 0;
+            }
+
+            :host(.closing) .cat {
+              transform: translate(-50%, 20px) scale(0.8);
+              opacity: 0;
+              transition: all 0.4s ease-in;
+            }
+          </style>
+
+          <div class="overlay" part="overlay"></div>
+          <div class="box" part="box">
+            <div class="cat" part="cat">🐱</div>
+            <div class="content" part="content">
+              <slot></slot>
+            </div>
+          </div>
+        `;
+      }
+
+      setupEventListeners() {
+        const overlay = this.shadowRoot.querySelector('.overlay');
+        
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) {
+            this.close();
+          }
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.isOpen) {
+            this.close();
+          }
+        });
+      }
+
+      show() {
+        if (this.animationInProgress || this.isOpen) return;
+        
+        this.animationInProgress = true;
+        this.isOpen = true;
+        
+        const overlay = this.shadowRoot.querySelector('.overlay');
+        const box = this.shadowRoot.querySelector('.box');
+        const cat = this.shadowRoot.querySelector('.cat');
+        
+        this.setAttribute('open', '');
+        
+        requestAnimationFrame(() => {
+          overlay.classList.add('show');
+          
+          setTimeout(() => {
+            box.classList.add('show');
+          }, 100);
+          
+          setTimeout(() => {
+            cat.classList.add('show');
+            
+            setTimeout(() => {
+              cat.classList.add('blink');
+              this.animationInProgress = false;
+            }, 600);
+          }, 300);
+        });
+
+        this.dispatchEvent(new CustomEvent('nyacat-modal-open', {
+          bubbles: true,
+          detail: { variant: this.variant, size: this.size }
+        }));
+      }
+
+      hide() {
+        if (this.animationInProgress || !this.isOpen) return;
+        
+        this.animationInProgress = true;
+        this.isOpen = false;
+        
+        const overlay = this.shadowRoot.querySelector('.overlay');
+        const box = this.shadowRoot.querySelector('.box');
+        const cat = this.shadowRoot.querySelector('.cat');
+        
+        this.classList.add('closing');
+        
+        cat.classList.remove('blink');
+        cat.classList.remove('show');
+        
+        setTimeout(() => {
+          box.classList.remove('show');
+        }, 200);
+        
+        setTimeout(() => {
+          overlay.classList.remove('show');
+        }, 400);
+        
+        setTimeout(() => {
+          this.removeAttribute('open');
+          this.classList.remove('closing');
+          box.classList.remove('show');
+          cat.classList.remove('show', 'blink');
+          this.animationInProgress = false;
+        }, 700);
+
+        this.dispatchEvent(new CustomEvent('nyacat-modal-close', {
+          bubbles: true,
+          detail: { variant: this.variant, size: this.size }
+        }));
+      }
+
+      open() {
+        this.show();
+      }
+
+      close() {
+        this.hide();
+      }
+    }
+
+    customElements.define('nyacat-modal', NyacatModal);
+  </script>
 </head>
 <body class="bg-gradient-to-br from-neko-cream to-neko-pink min-h-screen">
   <div class="container mx-auto p-8">
     <header class="text-center mb-12">
-      <h1 class="text-5xl font-bold text-neko-black mb-4">🐱 Neko UI</h1>
-      <p class="text-xl text-neko-brown">猫をテーマにした可愛いUIコンポーネントライブラリ</p>
+      <h1 class="text-5xl font-bold text-nyacat-black mb-4">🐱 Neko UI</h1>
+      <p class="text-xl text-nyacat-brown">猫をテーマにした可愛いUIコンポーネントライブラリ</p>
     </header>
 
     <main class="space-y-12">
       <!-- NekoButton セクション -->
       <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-        <h2 class="text-3xl font-bold text-neko-black mb-6">🐾 NekoButton</h2>
+        <h2 class="text-3xl font-bold text-nyacat-black mb-6">🐾 NekoButton</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="text-center">
-            <button class="btn-neko">通常のボタン</button>
-            <p class="mt-2 text-sm text-neko-gray">基本の.btn-nekoクラス</p>
+            <button class="btn-nyacat">通常のボタン</button>
+            <p class="mt-2 text-sm text-nyacat-gray">基本の.btn-nyacatクラス</p>
           </div>
           <div class="text-center">
-            <button class="btn-neko animate-tail-wag">しっぽフリフリ</button>
-            <p class="mt-2 text-sm text-neko-gray">.animate-tail-wag付き</p>
+            <button class="btn-nyacat animate-tail-wag">しっぽフリフリ</button>
+            <p class="mt-2 text-sm text-nyacat-gray">.animate-tail-wag付き</p>
           </div>
           <div class="text-center">
-            <button class="btn-neko animate-purr">ゴロゴロ</button>
-            <p class="mt-2 text-sm text-neko-gray">.animate-purr付き</p>
+            <button class="btn-nyacat animate-purr">ゴロゴロ</button>
+            <p class="mt-2 text-sm text-nyacat-gray">.animate-purr付き</p>
           </div>
         </div>
       </section>
 
       <!-- 猫種別ボタン セクション -->
       <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-        <h2 class="text-3xl font-bold text-neko-black mb-6">🐱 猫種別ボタン</h2>
-        <p class="text-neko-gray mb-8 text-center">様々な猫の種類をテーマにしたボタンバリエーション</p>
+        <h2 class="text-3xl font-bold text-nyacat-black mb-6">🐱 猫種別ボタン</h2>
+        <p class="text-nyacat-gray mb-8 text-center">様々な猫の種類をテーマにしたボタンバリエーション</p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="text-center">
-            <button class="btn-neko btn-neko-tuxedo">🤍 ハチワレ</button>
-            <p class="mt-2 text-sm text-neko-gray">.btn-neko-tuxedo</p>
-            <p class="text-xs text-neko-gray">白ベース + 黒模様</p>
+            <button class="btn-nyacat btn-nyacat-tuxedo">🤍 ハチワレ</button>
+            <p class="mt-2 text-sm text-nyacat-gray">.btn-nyacat-tuxedo</p>
+            <p class="text-xs text-nyacat-gray">白ベース + 黒模様</p>
           </div>
           <div class="text-center">
-            <button class="btn-neko btn-neko-orange">🧡 茶トラ</button>
-            <p class="mt-2 text-sm text-neko-gray">.btn-neko-orange</p>
-            <p class="text-xs text-neko-gray">オレンジ縞模様</p>
+            <button class="btn-nyacat btn-nyacat-orange">🧡 茶トラ</button>
+            <p class="mt-2 text-sm text-nyacat-gray">.btn-nyacat-orange</p>
+            <p class="text-xs text-nyacat-gray">オレンジ縞模様</p>
           </div>
           <div class="text-center">
-            <button class="btn-neko btn-neko-gray">🩶 グレー</button>
-            <p class="mt-2 text-sm text-neko-gray">.btn-neko-gray</p>
-            <p class="text-xs text-neko-gray">グレー縞模様</p>
+            <button class="btn-nyacat btn-nyacat-gray">🩶 グレー</button>
+            <p class="mt-2 text-sm text-nyacat-gray">.btn-nyacat-gray</p>
+            <p class="text-xs text-nyacat-gray">グレー縞模様</p>
           </div>
           <div class="text-center">
-            <button class="btn-neko btn-neko-calico">🎨 三毛猫</button>
-            <p class="mt-2 text-sm text-neko-gray">.btn-neko-calico</p>
-            <p class="text-xs text-neko-gray">白 + オレンジ + 黒</p>
+            <button class="btn-nyacat btn-nyacat-calico">🎨 三毛猫</button>
+            <p class="mt-2 text-sm text-nyacat-gray">.btn-nyacat-calico</p>
+            <p class="text-xs text-nyacat-gray">白 + オレンジ + 黒</p>
           </div>
           <div class="text-center">
-            <button class="btn-neko btn-neko-black">🖤 黒猫</button>
-            <p class="mt-2 text-sm text-neko-gray">.btn-neko-black</p>
-            <p class="text-xs text-neko-gray">真っ黒 + 光沢</p>
+            <button class="btn-nyacat btn-nyacat-black">🖤 黒猫</button>
+            <p class="mt-2 text-sm text-nyacat-gray">.btn-nyacat-black</p>
+            <p class="text-xs text-nyacat-gray">真っ黒 + 光沢</p>
           </div>
           <div class="text-center">
-            <button class="btn-neko btn-neko-white">🤍 白猫</button>
-            <p class="mt-2 text-sm text-neko-gray">.btn-neko-white</p>
-            <p class="text-xs text-neko-gray">純白 + 影</p>
+            <button class="btn-nyacat btn-nyacat-white">🤍 白猫</button>
+            <p class="mt-2 text-sm text-nyacat-gray">.btn-nyacat-white</p>
+            <p class="text-xs text-nyacat-gray">純白 + 影</p>
           </div>
         </div>
       </section>
 
       <!-- NekoLoading セクション -->
       <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-        <h2 class="text-3xl font-bold text-neko-black mb-6">⏳ NekoLoading</h2>
-        <p class="text-neko-gray mb-8 text-center">可愛い猫のローディングアニメーション</p>
+        <h2 class="text-3xl font-bold text-nyacat-black mb-6">⏳ NekoLoading</h2>
+        <p class="text-nyacat-gray mb-8 text-center">可愛い猫のローディングアニメーション</p>
         
         <!-- 基本のローディング -->
         <div class="mb-8">
-          <h3 class="text-xl font-semibold text-neko-black mb-4">🔄 基本のローディング</h3>
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">🔄 基本のローディング</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="text-center bg-gray-50 p-6 rounded-lg">
-              <div class="loading-neko mx-auto mb-4"></div>
-              <h4 class="font-medium text-neko-black mb-2">くるくる回転</h4>
-              <p class="text-sm text-neko-gray mb-2">.loading-neko</p>
-              <p class="text-xs text-neko-gray">2秒で1回転</p>
+              <div class="loading-nyacat mx-auto mb-4"></div>
+              <h4 class="font-medium text-nyacat-black mb-2">くるくる回転</h4>
+              <p class="text-sm text-nyacat-gray mb-2">.loading-nyacat</p>
+              <p class="text-xs text-nyacat-gray">2秒で1回転</p>
             </div>
             <div class="text-center bg-gray-50 p-6 rounded-lg">
-              <div class="loading-neko-groom mx-auto mb-4"></div>
-              <h4 class="font-medium text-neko-black mb-2">毛づくろい</h4>
-              <p class="text-sm text-neko-gray mb-2">.loading-neko-groom</p>
-              <p class="text-xs text-neko-gray">上下に動いて毛づくろい</p>
+              <div class="loading-nyacat-groom mx-auto mb-4"></div>
+              <h4 class="font-medium text-nyacat-black mb-2">毛づくろい</h4>
+              <p class="text-sm text-nyacat-gray mb-2">.loading-nyacat-groom</p>
+              <p class="text-xs text-nyacat-gray">上下に動いて毛づくろい</p>
             </div>
           </div>
         </div>
 
         <!-- サイズバリエーション -->
         <div class="mb-8">
-          <h3 class="text-xl font-semibold text-neko-black mb-4">📏 サイズバリエーション</h3>
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">📏 サイズバリエーション</h3>
           <div class="flex items-center justify-center space-x-8 bg-gray-50 p-6 rounded-lg">
             <div class="text-center">
-              <div class="loading-neko loading-neko-sm mx-auto mb-2"></div>
-              <p class="text-xs text-neko-gray">Small (.loading-neko-sm)</p>
+              <div class="loading-nyacat loading-nyacat-sm mx-auto mb-2"></div>
+              <p class="text-xs text-nyacat-gray">Small (.loading-nyacat-sm)</p>
             </div>
             <div class="text-center">
-              <div class="loading-neko mx-auto mb-2"></div>
-              <p class="text-xs text-neko-gray">Default</p>
+              <div class="loading-nyacat mx-auto mb-2"></div>
+              <p class="text-xs text-nyacat-gray">Default</p>
             </div>
             <div class="text-center">
-              <div class="loading-neko loading-neko-lg mx-auto mb-2"></div>
-              <p class="text-xs text-neko-gray">Large (.loading-neko-lg)</p>
+              <div class="loading-nyacat loading-nyacat-lg mx-auto mb-2"></div>
+              <p class="text-xs text-nyacat-gray">Large (.loading-nyacat-lg)</p>
             </div>
             <div class="text-center">
-              <div class="loading-neko loading-neko-xl mx-auto mb-2"></div>
-              <p class="text-xs text-neko-gray">Extra Large (.loading-neko-xl)</p>
+              <div class="loading-nyacat loading-nyacat-xl mx-auto mb-2"></div>
+              <p class="text-xs text-nyacat-gray">Extra Large (.loading-nyacat-xl)</p>
             </div>
           </div>
         </div>
 
         <!-- 実用例 -->
         <div class="border-t border-neko-gray/20 pt-6">
-          <h3 class="text-xl font-semibold text-neko-black mb-4">✨ 実用例</h3>
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">✨ 実用例</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gray-50 p-6 rounded-lg">
-              <h4 class="font-medium text-neko-black mb-4">ボタンのローディング状態</h4>
+              <h4 class="font-medium text-nyacat-black mb-4">ボタンのローディング状態</h4>
               <div class="space-y-3">
-                <button class="btn-neko flex items-center space-x-2" disabled>
-                  <div class="loading-neko-sm"></div>
+                <button class="btn-nyacat flex items-center space-x-2" disabled>
+                  <div class="loading-nyacat-sm"></div>
                   <span>送信中...</span>
                 </button>
-                <button class="btn-neko btn-neko-orange flex items-center space-x-2" disabled>
-                  <div class="loading-neko-groom loading-neko-sm"></div>
+                <button class="btn-nyacat btn-nyacat-orange flex items-center space-x-2" disabled>
+                  <div class="loading-nyacat-groom loading-nyacat-sm"></div>
                   <span>処理中...</span>
                 </button>
               </div>
             </div>
             <div class="bg-gray-50 p-6 rounded-lg">
-              <h4 class="font-medium text-neko-black mb-4">ページローディング</h4>
+              <h4 class="font-medium text-nyacat-black mb-4">ページローディング</h4>
               <div class="text-center">
-                <div class="loading-neko-groom loading-neko-lg mx-auto mb-4"></div>
-                <p class="text-neko-gray">コンテンツを読み込み中...</p>
-                <p class="text-xs text-neko-gray mt-2">猫が毛づくろい中...</p>
+                <div class="loading-nyacat-groom loading-nyacat-lg mx-auto mb-4"></div>
+                <p class="text-nyacat-gray">コンテンツを読み込み中...</p>
+                <p class="text-xs text-nyacat-gray mt-2">猫が毛づくろい中...</p>
               </div>
             </div>
           </div>
@@ -149,62 +447,62 @@
 
       <!-- 猫パーツ セクション -->
       <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-        <h2 class="text-3xl font-bold text-neko-black mb-6">🐾 猫パーツ</h2>
-        <p class="text-neko-gray mb-8 text-center">ボタンに猫らしいパーツを追加して更に可愛く</p>
+        <h2 class="text-3xl font-bold text-nyacat-black mb-6">🐾 猫パーツ</h2>
+        <p class="text-nyacat-gray mb-8 text-center">ボタンに猫らしいパーツを追加して更に可愛く</p>
         
         <!-- 尻尾パーツ -->
         <div class="mb-8">
-          <h3 class="text-xl font-semibold text-neko-black mb-4">🦘 尻尾パーツ (.btn-neko-tail)</h3>
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">🦘 尻尾パーツ (.btn-nyacat-tail)</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
             <div class="text-center">
-              <button class="btn-neko btn-neko-tail">基本の尻尾</button>
-              <p class="mt-2 text-sm text-neko-gray">ホバーで尻尾が揺れる</p>
+              <button class="btn-nyacat btn-nyacat-tail">基本の尻尾</button>
+              <p class="mt-2 text-sm text-nyacat-gray">ホバーで尻尾が揺れる</p>
             </div>
             <div class="text-center">
-              <button class="btn-neko btn-neko-orange btn-neko-tail">茶トラ + 尻尾</button>
-              <p class="mt-2 text-sm text-neko-gray">猫種 + 尻尾の組み合わせ</p>
+              <button class="btn-nyacat btn-nyacat-orange btn-nyacat-tail">茶トラ + 尻尾</button>
+              <p class="mt-2 text-sm text-nyacat-gray">猫種 + 尻尾の組み合わせ</p>
             </div>
             <div class="text-center">
-              <button class="btn-neko btn-neko-black btn-neko-tail animate-tail-wag">黒猫 + 尻尾 + アニメ</button>
-              <p class="mt-2 text-sm text-neko-gray">全部盛り</p>
+              <button class="btn-nyacat btn-nyacat-black btn-nyacat-tail animate-tail-wag">黒猫 + 尻尾 + アニメ</button>
+              <p class="mt-2 text-sm text-nyacat-gray">全部盛り</p>
             </div>
           </div>
         </div>
 
         <!-- 肉球パーツ -->
         <div class="mb-8">
-          <h3 class="text-xl font-semibold text-neko-black mb-4">🐾 肉球パーツ</h3>
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">🐾 肉球パーツ</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div class="text-center">
-              <h4 class="font-medium text-neko-gray mb-3">絵文字版 (.btn-neko-paws)</h4>
+              <h4 class="font-medium text-nyacat-gray mb-3">絵文字版 (.btn-nyacat-paws)</h4>
               <div class="space-y-3">
-                <button class="btn-neko btn-neko-paws">基本の肉球</button>
-                <button class="btn-neko btn-neko-calico btn-neko-paws">三毛 + 肉球</button>
+                <button class="btn-nyacat btn-nyacat-paws">基本の肉球</button>
+                <button class="btn-nyacat btn-nyacat-calico btn-nyacat-paws">三毛 + 肉球</button>
               </div>
-              <p class="mt-2 text-xs text-neko-gray">クリックで肉球が拡大</p>
+              <p class="mt-2 text-xs text-nyacat-gray">クリックで肉球が拡大</p>
             </div>
             <div class="text-center">
-              <h4 class="font-medium text-neko-gray mb-3">CSS版 (.btn-neko-paws-css)</h4>
+              <h4 class="font-medium text-nyacat-gray mb-3">CSS版 (.btn-nyacat-paws-css)</h4>
               <div class="space-y-3">
-                <button class="btn-neko btn-neko-paws-css">CSS肉球</button>
-                <button class="btn-neko btn-neko-tuxedo btn-neko-paws-css">ハチワレ + CSS肉球</button>
+                <button class="btn-nyacat btn-nyacat-paws-css">CSS肉球</button>
+                <button class="btn-nyacat btn-nyacat-tuxedo btn-nyacat-paws-css">ハチワレ + CSS肉球</button>
               </div>
-              <p class="mt-2 text-xs text-neko-gray">絵文字が使えない環境向け</p>
+              <p class="mt-2 text-xs text-nyacat-gray">絵文字が使えない環境向け</p>
             </div>
           </div>
         </div>
 
         <!-- 組み合わせ例 -->
         <div class="border-t border-neko-gray/20 pt-6">
-          <h3 class="text-xl font-semibold text-neko-black mb-4">✨ 組み合わせ例</h3>
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">✨ 組み合わせ例</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="text-center">
-              <button class="btn-neko btn-neko-white btn-neko-tail btn-neko-paws animate-purr">完全体白猫</button>
-              <p class="mt-2 text-sm text-neko-gray">白猫 + 尻尾 + 肉球 + ゴロゴロ</p>
+              <button class="btn-nyacat btn-nyacat-white btn-nyacat-tail btn-nyacat-paws animate-purr">完全体白猫</button>
+              <p class="mt-2 text-sm text-nyacat-gray">白猫 + 尻尾 + 肉球 + ゴロゴロ</p>
             </div>
             <div class="text-center">
-              <button class="btn-neko btn-neko-gray btn-neko-tail btn-neko-paws-css animate-tail-wag">完全体グレー</button>
-              <p class="mt-2 text-sm text-neko-gray">グレー + 尻尾 + CSS肉球 + 尻尾フリフリ</p>
+              <button class="btn-nyacat btn-nyacat-gray btn-nyacat-tail btn-nyacat-paws-css animate-tail-wag">完全体グレー</button>
+              <p class="mt-2 text-sm text-nyacat-gray">グレー + 尻尾 + CSS肉球 + 尻尾フリフリ</p>
             </div>
           </div>
         </div>
@@ -212,95 +510,95 @@
 
       <!-- NekoInput セクション -->
       <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-        <h2 class="text-3xl font-bold text-neko-black mb-6">📝 NekoInput</h2>
-        <p class="text-neko-gray mb-8 text-center">フォーカス時に猫耳が出現する入力フィールド</p>
+        <h2 class="text-3xl font-bold text-nyacat-black mb-6">📝 NekoInput</h2>
+        <p class="text-nyacat-gray mb-8 text-center">フォーカス時に猫耳が出現する入力フィールド</p>
         
         <!-- 基本のNekoInput -->
         <div class="mb-8">
-          <h3 class="text-xl font-semibold text-neko-black mb-4">🐱 基本のNekoInput</h3>
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">🐱 基本のNekoInput</h3>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-neko-gray mb-2">新しい NekoInput（猫耳 + 尻尾）</label>
-              <div class="neko-input-wrapper">
+              <label class="block text-sm font-medium text-nyacat-gray mb-2">新しい NekoInput（猫耳 + 尻尾）</label>
+              <div class="nyacat-input-wrapper">
                 <input type="text" placeholder="フォーカスすると猫耳と尻尾が出るよ！">
-                <div class="neko-ears"></div>
-                <div class="neko-tail"></div>
+                <div class="nyacat-ears"></div>
+                <div class="nyacat-tail"></div>
               </div>
-              <p class="text-xs text-neko-gray mt-1">クラス: .neko-input-wrapper（猫耳のピクピク + 尻尾のフリフリ）</p>
+              <p class="text-xs text-nyacat-gray mt-1">クラス: .nyacat-input-wrapper（猫耳のピクピク + 尻尾のフリフリ）</p>
             </div>
           </div>
         </div>
 
         <!-- 状態バリエーション -->
         <div class="mb-8">
-          <h3 class="text-xl font-semibold text-neko-black mb-4">😾😸 状態バリエーション</h3>
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">😾😸 状態バリエーション</h3>
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-red-600 mb-2">エラー状態</label>
-              <div class="neko-input-wrapper neko-input-error">
+              <div class="nyacat-input-wrapper nyacat-input-error">
                 <input type="email" placeholder="無効なメールアドレス" value="invalid-email">
-                <div class="neko-ears"></div>
-                <div class="neko-tail"></div>
+                <div class="nyacat-ears"></div>
+                <div class="nyacat-tail"></div>
               </div>
-              <p class="text-xs text-neko-gray mt-1">クラス: .neko-input-wrapper .neko-input-error</p>
+              <p class="text-xs text-nyacat-gray mt-1">クラス: .nyacat-input-wrapper .nyacat-input-error</p>
             </div>
             <div>
               <label class="block text-sm font-medium text-green-600 mb-2">成功状態</label>
-              <div class="neko-input-wrapper neko-input-success">
+              <div class="nyacat-input-wrapper nyacat-input-success">
                 <input type="email" placeholder="有効なメールアドレス" value="cat@example.com">
-                <div class="neko-ears"></div>
-                <div class="neko-tail"></div>
+                <div class="nyacat-ears"></div>
+                <div class="nyacat-tail"></div>
               </div>
-              <p class="text-xs text-neko-gray mt-1">クラス: .neko-input-wrapper .neko-input-success</p>
+              <p class="text-xs text-nyacat-gray mt-1">クラス: .nyacat-input-wrapper .nyacat-input-success</p>
             </div>
           </div>
         </div>
 
         <!-- フォーム例 -->
         <div class="border-t border-neko-gray/20 pt-6">
-          <h3 class="text-xl font-semibold text-neko-black mb-4">✨ 実用例：猫の登録フォーム</h3>
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">✨ 実用例：猫の登録フォーム</h3>
           <form class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-neko-black mb-2">猫の名前 *</label>
-                <div class="neko-input-wrapper">
+                <label class="block text-sm font-medium text-nyacat-black mb-2">猫の名前 *</label>
+                <div class="nyacat-input-wrapper">
                   <input type="text" placeholder="例: ミケ" required>
-                  <div class="neko-ears"></div>
-                  <div class="neko-tail"></div>
+                  <div class="nyacat-ears"></div>
+                  <div class="nyacat-tail"></div>
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-medium text-neko-black mb-2">年齢</label>
-                <div class="neko-input-wrapper">
+                <label class="block text-sm font-medium text-nyacat-black mb-2">年齢</label>
+                <div class="nyacat-input-wrapper">
                   <input type="number" placeholder="例: 3" min="0">
-                  <div class="neko-ears"></div>
-                  <div class="neko-tail"></div>
+                  <div class="nyacat-ears"></div>
+                  <div class="nyacat-tail"></div>
                 </div>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-neko-black mb-2">種類</label>
-              <div class="neko-input-wrapper">
+              <label class="block text-sm font-medium text-nyacat-black mb-2">種類</label>
+              <div class="nyacat-input-wrapper">
                 <select>
                   <option>雑種</option>
                   <option>アメリカンショートヘア</option>
                   <option>ペルシャ</option>
                   <option>ロシアンブルー</option>
                 </select>
-                <div class="neko-ears"></div>
-                <div class="neko-tail"></div>
+                <div class="nyacat-ears"></div>
+                <div class="nyacat-tail"></div>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-neko-black mb-2">特徴・性格</label>
-              <div class="neko-input-wrapper">
+              <label class="block text-sm font-medium text-nyacat-black mb-2">特徴・性格</label>
+              <div class="nyacat-input-wrapper">
                 <textarea rows="3" placeholder="うちの猫の可愛いところを教えて！"></textarea>
-                <div class="neko-ears"></div>
-                <div class="neko-tail"></div>
+                <div class="nyacat-ears"></div>
+                <div class="nyacat-tail"></div>
               </div>
             </div>
             <div class="flex justify-end">
-              <button type="submit" class="btn-neko btn-neko-orange">
+              <button type="submit" class="btn-nyacat btn-nyacat-orange">
                 🐾 登録する
               </button>
             </div>
@@ -308,62 +606,477 @@
         </div>
       </section>
 
+      <!-- NekoCard セクション -->
+      <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-bold text-nyacat-black mb-6">📦 NekoCard</h2>
+        <p class="text-nyacat-gray mb-8 text-center">段ボール箱から猫が顔を出すカード - ホバーすると猫が現れます！</p>
+        
+        <!-- 基本のNekoCard -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">📦 基本のNekoCard</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="card-nyacat">
+              <h4 class="font-semibold text-nyacat-black mb-2">基本のカード</h4>
+              <p class="text-sm text-nyacat-gray">ホバーすると猫が箱から顔を出すよ！</p>
+              <p class="text-xs text-nyacat-gray mt-2">クラス: .card-nyacat</p>
+            </div>
+            <div class="card-nyacat card-nyacat-peek">
+              <h4 class="font-semibold text-nyacat-black mb-2">のぞき見カード</h4>
+              <p class="text-sm text-nyacat-gray">常に少し猫が見えている状態</p>
+              <p class="text-xs text-nyacat-gray mt-2">クラス: .card-nyacat-peek</p>
+            </div>
+            <div class="card-nyacat card-nyacat-family">
+              <h4 class="font-semibold text-nyacat-black mb-2">ファミリーカード</h4>
+              <p class="text-sm text-nyacat-gray">猫の家族が一緒に顔を出すよ</p>
+              <p class="text-xs text-nyacat-gray mt-2">クラス: .card-nyacat-family</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 猫種バリエーション -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">🐱 猫種バリエーション</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="card-nyacat card-nyacat-orange">
+              <h4 class="font-semibold text-orange-600 mb-2">茶トラの箱</h4>
+              <p class="text-sm text-nyacat-gray">オレンジ色の猫が箱から顔を出します</p>
+              <p class="text-xs text-nyacat-gray mt-1">箱も茶色っぽい色合い</p>
+            </div>
+            <div class="card-nyacat card-nyacat-tuxedo">
+              <h4 class="font-semibold text-nyacat-black mb-2">ハチワレの箱</h4>
+              <p class="text-sm text-nyacat-gray">白黒のツートンカラー猫</p>
+              <p class="text-xs text-nyacat-gray mt-1">箱はシンプルなグレー系</p>
+            </div>
+            <div class="card-nyacat card-nyacat-gray">
+              <h4 class="font-semibold text-gray-600 mb-2">グレーの箱</h4>
+              <p class="text-sm text-nyacat-gray">グレー色の猫が箱から顔を出します</p>
+              <p class="text-xs text-nyacat-gray mt-1">落ち着いたグレー調の箱</p>
+            </div>
+            <div class="card-nyacat card-nyacat-calico">
+              <h4 class="font-semibold text-amber-600 mb-2">三毛猫の箱</h4>
+              <p class="text-sm text-nyacat-gray">オレンジと黒の模様が入った猫</p>
+              <p class="text-xs text-nyacat-gray mt-1">箱にも斑点模様</p>
+            </div>
+            <div class="card-nyacat card-nyacat-black">
+              <h4 class="font-semibold text-gray-800 mb-2">黒猫の箱</h4>
+              <p class="text-sm text-nyacat-gray">真っ黒な猫が箱から顔を出します</p>
+              <p class="text-xs text-nyacat-gray mt-1">シックな色合いの箱</p>
+            </div>
+            <div class="card-nyacat card-nyacat-white">
+              <h4 class="font-semibold text-gray-600 mb-2">白猫の箱</h4>
+              <p class="text-sm text-nyacat-gray">真っ白な猫（影付きで見やすく）</p>
+              <p class="text-xs text-nyacat-gray mt-1">純白の箱</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- サイズバリエーション -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">📏 サイズバリエーション</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card-nyacat card-nyacat-sm card-nyacat-orange">
+              <h4 class="font-medium text-nyacat-black mb-2">小さな箱</h4>
+              <p class="text-xs text-nyacat-gray">クラス: .card-nyacat-sm</p>
+            </div>
+            <div class="card-nyacat card-nyacat-gray">
+              <h4 class="font-medium text-nyacat-black mb-2">普通の箱</h4>
+              <p class="text-sm text-nyacat-gray">デフォルトサイズ</p>
+            </div>
+            <div class="card-nyacat card-nyacat-lg card-nyacat-calico">
+              <h4 class="font-medium text-nyacat-black mb-3">大きな箱</h4>
+              <p class="text-sm text-nyacat-gray mb-4">たくさんスペースがあるよ</p>
+              <p class="text-xs text-nyacat-gray">クラス: .card-nyacat-lg</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 実用例 -->
+        <div class="border-t border-neko-gray/20 pt-6">
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">✨ 実用例</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card-nyacat card-nyacat-tuxedo">
+              <h4 class="font-semibold text-nyacat-black mb-3">🐾 猫のプロフィール</h4>
+              <div class="space-y-2">
+                <p class="text-sm"><strong>名前:</strong> ミケ</p>
+                <p class="text-sm"><strong>年齢:</strong> 3歳</p>
+                <p class="text-sm"><strong>性格:</strong> おてんば</p>
+                <p class="text-sm"><strong>好物:</strong> ちゅーる</p>
+              </div>
+            </div>
+            <div class="card-nyacat card-nyacat-family card-nyacat-peek">
+              <h4 class="font-semibold text-nyacat-black mb-3">📢 お知らせ</h4>
+              <p class="text-sm text-nyacat-gray mb-3">新しい猫ちゃんが家族に加わりました！みんなで歓迎してあげてね。</p>
+              <p class="text-xs text-nyacat-gray">2024年7月30日</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NekoModal セクション -->
+      <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-bold text-nyacat-black mb-6">📦 NekoModal</h2>
+        <p class="text-nyacat-gray mb-8 text-center">段ボール箱から猫が顔を出すモーダル - オーバーレイクリックで猫が隠れます</p>
+        
+        <!-- 基本のNekoModal -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">📦 基本のNekoModal</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="text-center">
+              <button class="btn-nyacat" onclick="showNyacatModal('modal1')">基本のモーダル</button>
+              <p class="mt-2 text-sm text-nyacat-gray">シンプルな猫モーダル</p>
+            </div>
+            <div class="text-center">
+              <button class="btn-nyacat btn-nyacat-orange" onclick="showNyacatModal('modal2')">茶トラモーダル</button>
+              <p class="mt-2 text-sm text-nyacat-gray">茶トラ猫のモーダル</p>
+            </div>
+            <div class="text-center">
+              <button class="btn-nyacat btn-nyacat-tuxedo" onclick="showNyacatModal('modal3')">ハチワレモーダル</button>
+              <p class="mt-2 text-sm text-nyacat-gray">ハチワレ猫のモーダル</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- サイズバリエーション -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">📏 サイズバリエーション</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center">
+              <button class="btn-nyacat btn-nyacat-sm" onclick="showNyacatModal('modal4')">小さなモーダル</button>
+              <p class="mt-2 text-xs text-nyacat-gray">コンパクトサイズ</p>
+            </div>
+            <div class="text-center">
+              <button class="btn-nyacat" onclick="showNyacatModal('modal5')">普通のモーダル</button>
+              <p class="mt-2 text-sm text-nyacat-gray">デフォルトサイズ</p>
+            </div>
+            <div class="text-center">
+              <button class="btn-nyacat btn-nyacat-lg" onclick="showNyacatModal('modal6')">大きなモーダル</button>
+              <p class="mt-2 text-sm text-nyacat-gray">ワイドサイズ</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Web Components版 -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">⚡ Web Components版（推奨）</h3>
+          <p class="text-sm text-nyacat-gray mb-4">フレームワーク非依存でどこでも使えるWeb Components版</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            <div class="text-center">
+              <button class="btn-nyacat" onclick="document.getElementById('wc-modal1').open()">Web Components</button>
+              <p class="mt-2 text-sm text-nyacat-gray">基本のWeb Component</p>
+            </div>
+            <div class="text-center">
+              <button class="btn-nyacat btn-nyacat-orange" onclick="document.getElementById('wc-modal2').open()">茶トラWC</button>
+              <p class="mt-2 text-sm text-nyacat-gray">variant="orange"</p>
+            </div>
+            <div class="text-center">
+              <button class="btn-nyacat btn-nyacat-lg" onclick="document.getElementById('wc-modal3').open()">大きなWC</button>
+              <p class="mt-2 text-sm text-nyacat-gray">size="lg"</p>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-semibold mb-2">使用例:</h4>
+            <pre class="text-xs bg-gray-800 text-green-400 p-3 rounded overflow-x-auto"><code>&lt;nyacat-modal variant="orange" size="lg"&gt;
+  &lt;h3&gt;タイトル&lt;/h3&gt;
+  &lt;p&gt;コンテンツ&lt;/p&gt;
+  &lt;button onclick="this.closest('nyacat-modal').close()"&gt;閉じる&lt;/button&gt;
+&lt;/nyacat-modal&gt;
+
+&lt;!-- JavaScript で制御 --&gt;
+&lt;script&gt;
+  document.querySelector('nyacat-modal').open();
+&lt;/script&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- 使用方法 -->
+        <div class="border-t border-neko-gray/20 pt-6">
+          <h3 class="text-xl font-semibold text-nyacat-black mb-4">💡 使用方法</h3>
+          <div class="bg-gray-50 p-4 rounded-lg text-sm">
+            <p class="mb-2"><strong>Web Components:</strong> <code>&lt;nyacat-modal&gt;</code> タグを使用</p>
+            <p class="mb-2"><strong>属性:</strong> variant="orange|tuxedo|gray|black|white", size="sm|lg"</p>
+            <p class="mb-2"><strong>メソッド:</strong> <code>.open()</code>, <code>.close()</code></p>
+            <p class="text-xs text-nyacat-gray mt-3">※ React、Vue、Rails等どのフレームワークでも使用可能</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 実際のモーダル要素 -->
+      <!-- 基本のモーダル -->
+      <div id="modal1" class="modal-neko-overlay" onclick="hideNyacatModal('modal1')">
+        <div class="modal-neko-box" onclick="event.stopPropagation()">
+          <div class="modal-neko-cat">🐱</div>
+          <div class="modal-neko-content">
+            <h3 class="text-xl font-bold text-nyacat-black mb-4">🐱 基本の猫モーダル</h3>
+            <p class="text-nyacat-gray mb-4">こんにちは！段ボール箱から顔を出してみました。</p>
+            <p class="text-sm text-nyacat-gray mb-6">背景をクリックすると箱に隠れます。</p>
+            <button class="btn-nyacat" onclick="hideNyacatModal('modal1')">閉じる</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 茶トラモーダル -->
+      <div id="modal2" class="modal-neko-overlay modal-neko-orange" onclick="hideNyacatModal('modal2')">
+        <div class="modal-neko-box" onclick="event.stopPropagation()">
+          <div class="modal-neko-cat">🐱</div>
+          <div class="modal-neko-content">
+            <h3 class="text-xl font-bold text-orange-600 mb-4">🧡 茶トラ猫のモーダル</h3>
+            <p class="text-nyacat-gray mb-4">茶色い猫ちゃんです！元気いっぱいだよ。</p>
+            <div class="space-y-2 mb-6">
+              <p class="text-sm"><strong>性格:</strong> 活発で好奇心旺盛</p>
+              <p class="text-sm"><strong>好きなもの:</strong> 日向ぼっこ、おもちゃ</p>
+            </div>
+            <button class="btn-nyacat btn-nyacat-orange" onclick="hideNyacatModal('modal2')">閉じる</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ハチワレモーダル -->
+      <div id="modal3" class="modal-neko-overlay modal-neko-tuxedo" onclick="hideNyacatModal('modal3')">
+        <div class="modal-neko-box" onclick="event.stopPropagation()">
+          <div class="modal-neko-cat">🐱</div>
+          <div class="modal-neko-content">
+            <h3 class="text-xl font-bold text-nyacat-black mb-4">🖤🤍 ハチワレ猫のモーダル</h3>
+            <p class="text-nyacat-gray mb-4">白と黒のツートンカラーが特徴的です。</p>
+            <div class="space-y-2 mb-6">
+              <p class="text-sm"><strong>性格:</strong> おとなしくて上品</p>
+              <p class="text-sm"><strong>好きなもの:</strong> 静かな場所、読書のお供</p>
+            </div>
+            <button class="btn-nyacat btn-nyacat-tuxedo" onclick="hideNyacatModal('modal3')">閉じる</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 小さなモーダル -->
+      <div id="modal4" class="modal-neko-overlay modal-neko-sm modal-neko-gray" onclick="hideNyacatModal('modal4')">
+        <div class="modal-neko-box" onclick="event.stopPropagation()">
+          <div class="modal-neko-cat">🐱</div>
+          <div class="modal-neko-content">
+            <h3 class="text-lg font-bold text-gray-600 mb-3">小さなモーダル</h3>
+            <p class="text-sm text-nyacat-gray mb-4">コンパクトなサイズです。</p>
+            <button class="btn-nyacat btn-nyacat-sm" onclick="hideNyacatModal('modal4')">閉じる</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 普通のモーダル -->
+      <div id="modal5" class="modal-neko-overlay modal-neko-black" onclick="hideNyacatModal('modal5')">
+        <div class="modal-neko-box" onclick="event.stopPropagation()">
+          <div class="modal-neko-cat">🐱</div>
+          <div class="modal-neko-content">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">🖤 黒猫のモーダル</h3>
+            <p class="text-nyacat-gray mb-4">神秘的な黒猫ちゃんです。</p>
+            <p class="text-sm text-nyacat-gray mb-6">夜の散歩が大好きです。</p>
+            <button class="btn-nyacat btn-nyacat-black" onclick="hideNyacatModal('modal5')">閉じる</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 大きなモーダル -->
+      <div id="modal6" class="modal-neko-overlay modal-neko-lg modal-neko-white" onclick="hideNyacatModal('modal6')">
+        <div class="modal-neko-box" onclick="event.stopPropagation()">
+          <div class="modal-neko-cat">🐱</div>
+          <div class="modal-neko-content">
+            <h3 class="text-2xl font-bold text-gray-600 mb-4">🤍 大きな白猫モーダル</h3>
+            <p class="text-nyacat-gray mb-4">ゆったりとしたスペースの大きなモーダルです。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <h4 class="font-semibold mb-2">特徴</h4>
+                <ul class="text-sm text-nyacat-gray space-y-1">
+                  <li>• 真っ白で美しい毛色</li>
+                  <li>• 上品な佇まい</li>
+                  <li>• 穏やかな性格</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-semibold mb-2">好きなこと</h4>
+                <ul class="text-sm text-nyacat-gray space-y-1">
+                  <li>• お昼寝</li>
+                  <li>• グルーミング</li>
+                  <li>• 静かな環境</li>
+                </ul>
+              </div>
+            </div>
+            <button class="btn-nyacat btn-nyacat-white" onclick="hideNyacatModal('modal6')">閉じる</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vanilla JS版モーダル用のJavaScript -->
+      <script>
+        function showNyacatModal(modalId) {
+          const modal = document.getElementById(modalId);
+          const box = modal.querySelector('.modal-neko-box');
+          const cat = modal.querySelector('.modal-neko-cat');
+          
+          // モーダルを表示
+          modal.classList.add('modal-show');
+          
+          // 少し遅れて箱を表示
+          setTimeout(() => {
+            box.classList.add('modal-show');
+          }, 100);
+          
+          // さらに遅れて猫を表示
+          setTimeout(() => {
+            cat.classList.add('cat-show');
+            // 瞬きアニメーションを開始
+            setTimeout(() => {
+              cat.classList.add('cat-blink');
+            }, 1000);
+          }, 300);
+        }
+        
+        function hideNyacatModal(modalId) {
+          const modal = document.getElementById(modalId);
+          const box = modal.querySelector('.modal-neko-box');
+          const cat = modal.querySelector('.modal-neko-cat');
+          
+          // 瞬きを停止
+          cat.classList.remove('cat-blink');
+          
+          // 猫を隠す
+          cat.classList.remove('cat-show');
+          cat.classList.add('cat-hide');
+          
+          // 少し遅れて箱を隠す
+          setTimeout(() => {
+            box.classList.remove('modal-show');
+            box.classList.add('modal-hide');
+          }, 200);
+          
+          // オーバーレイを隠す
+          setTimeout(() => {
+            modal.classList.remove('modal-show');
+            modal.classList.add('modal-hide');
+          }, 400);
+          
+          // 完全にクリーンアップ
+          setTimeout(() => {
+            modal.classList.remove('modal-hide');
+            box.classList.remove('modal-show', 'modal-hide');
+            cat.classList.remove('cat-show', 'cat-hide', 'cat-blink');
+          }, 700);
+        }
+        
+        // ESCキーでモーダルを閉じる
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            const openModals = document.querySelectorAll('.modal-neko-overlay.modal-show');
+            openModals.forEach(modal => {
+              hideNyacatModal(modal.id);
+            });
+          }
+        });
+      </script>
+
+      <!-- Web Components版のモーダル -->
+      <nyacat-modal id="wc-modal1">
+        <h3 style="font-size: 1.25rem; font-weight: bold; color: #333; margin-bottom: 1rem;">🐱 Web Components Modal</h3>
+        <p style="color: #666; margin-bottom: 1rem;">これはWeb Componentsで作られたNekoModalです！</p>
+        <p style="color: #666; font-size: 0.875rem; margin-bottom: 1.5rem;">Rails、React、Vue、Angular等どのフレームワークでも使用できます。</p>
+        <button class="btn-nyacat" onclick="this.closest('nyacat-modal').close()">閉じる</button>
+      </nyacat-modal>
+
+      <nyacat-modal id="wc-modal2" variant="orange">
+        <h3 style="font-size: 1.25rem; font-weight: bold; color: #ff8c00; margin-bottom: 1rem;">🧡 茶トラ Web Components</h3>
+        <p style="color: #666; margin-bottom: 1rem;">variant="orange" が指定された茶トラ猫のモーダルです。</p>
+        <div style="margin-bottom: 1.5rem;">
+          <p style="font-size: 0.875rem; margin-bottom: 0.5rem;"><strong>特徴:</strong></p>
+          <ul style="font-size: 0.875rem; color: #666; list-style: disc; margin-left: 1rem;">
+            <li>オレンジ色の猫</li>
+            <li>フレームワーク非依存</li>
+            <li>Shadow DOM でカプセル化</li>
+          </ul>
+        </div>
+        <button class="btn-nyacat btn-nyacat-orange" onclick="this.closest('nyacat-modal').close()">閉じる</button>
+      </nyacat-modal>
+
+      <nyacat-modal id="wc-modal3" variant="gray" size="lg">
+        <h3 style="font-size: 1.5rem; font-weight: bold; color: #6b7280; margin-bottom: 1rem;">🩶 大きなグレー猫 Web Components</h3>
+        <p style="color: #666; margin-bottom: 1rem;">size="lg" variant="gray" が指定された大きなモーダルです。</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+          <div>
+            <h4 style="font-weight: 600; margin-bottom: 0.5rem;">Web Components の利点</h4>
+            <ul style="font-size: 0.875rem; color: #666; list-style: disc; margin-left: 1rem;">
+              <li>フレームワーク非依存</li>
+              <li>再利用可能</li>
+              <li>カプセル化</li>
+              <li>標準技術</li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="font-weight: 600; margin-bottom: 0.5rem;">対応フレームワーク</h4>
+            <ul style="font-size: 0.875rem; color: #666; list-style: disc; margin-left: 1rem;">
+              <li>Ruby on Rails</li>
+              <li>React / Next.js</li>
+              <li>Vue.js / Nuxt.js</li>
+              <li>Angular</li>
+            </ul>
+          </div>
+        </div>
+        
+        <button class="btn-nyacat btn-nyacat-gray" onclick="this.closest('nyacat-modal').close()">閉じる</button>
+      </nyacat-modal>
+
       <!-- カラーパレット セクション -->
       <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-        <h2 class="text-3xl font-bold text-neko-black mb-6">🎨 カラーパレット</h2>
+        <h2 class="text-3xl font-bold text-nyacat-black mb-6">🎨 カラーパレット</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div class="text-center">
             <div class="w-16 h-16 bg-neko-pink rounded-paw mx-auto mb-2 shadow-md"></div>
             <p class="text-sm font-medium">neko-pink</p>
-            <p class="text-xs text-neko-gray">#FFB6C1</p>
+            <p class="text-xs text-nyacat-gray">#FFB6C1</p>
           </div>
           <div class="text-center">
             <div class="w-16 h-16 bg-neko-salmon rounded-paw mx-auto mb-2 shadow-md"></div>
             <p class="text-sm font-medium">neko-salmon</p>
-            <p class="text-xs text-neko-gray">#FFA07A</p>
+            <p class="text-xs text-nyacat-gray">#FFA07A</p>
           </div>
           <div class="text-center">
             <div class="w-16 h-16 bg-neko-cream rounded-paw mx-auto mb-2 shadow-md"></div>
             <p class="text-sm font-medium">neko-cream</p>
-            <p class="text-xs text-neko-gray">#FFF8DC</p>
+            <p class="text-xs text-nyacat-gray">#FFF8DC</p>
           </div>
           <div class="text-center">
             <div class="w-16 h-16 bg-neko-brown rounded-paw mx-auto mb-2 shadow-md"></div>
             <p class="text-sm font-medium">neko-brown</p>
-            <p class="text-xs text-neko-gray">#D2B48C</p>
+            <p class="text-xs text-nyacat-gray">#D2B48C</p>
           </div>
           <div class="text-center">
             <div class="w-16 h-16 bg-neko-gray rounded-paw mx-auto mb-2 shadow-md"></div>
             <p class="text-sm font-medium">neko-gray</p>
-            <p class="text-xs text-neko-gray">#A9A9A9</p>
+            <p class="text-xs text-nyacat-gray">#A9A9A9</p>
           </div>
           <div class="text-center">
             <div class="w-16 h-16 bg-neko-black rounded-paw mx-auto mb-2 shadow-md"></div>
             <p class="text-sm font-medium">neko-black</p>
-            <p class="text-xs text-neko-gray">#2F2F2F</p>
+            <p class="text-xs text-nyacat-gray">#2F2F2F</p>
           </div>
         </div>
       </section>
 
       <!-- 使用例 セクション -->
       <section class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-        <h2 class="text-3xl font-bold text-neko-black mb-6">📝 使用例</h2>
-        <div class="bg-neko-black text-neko-cream rounded-lg p-4 font-mono text-sm overflow-x-auto">
+        <h2 class="text-3xl font-bold text-nyacat-black mb-6">📝 使用例</h2>
+        <div class="bg-neko-black text-nyacat-cream rounded-lg p-4 font-mono text-sm overflow-x-auto">
           <pre><code>&lt;!-- 基本のNekoButton --&gt;
-&lt;button class="btn-neko"&gt;クリックしてね&lt;/button&gt;
+&lt;button class="btn-nyacat"&gt;クリックしてね&lt;/button&gt;
 
 &lt;!-- 猫種別ボタン --&gt;
-&lt;button class="btn-neko btn-neko-tuxedo"&gt;ハチワレ&lt;/button&gt;
-&lt;button class="btn-neko btn-neko-orange"&gt;茶トラ&lt;/button&gt;
-&lt;button class="btn-neko btn-neko-gray"&gt;グレー&lt;/button&gt;
-&lt;button class="btn-neko btn-neko-calico"&gt;三毛猫&lt;/button&gt;
-&lt;button class="btn-neko btn-neko-black"&gt;黒猫&lt;/button&gt;
-&lt;button class="btn-neko btn-neko-white"&gt;白猫&lt;/button&gt;
+&lt;button class="btn-nyacat btn-nyacat-tuxedo"&gt;ハチワレ&lt;/button&gt;
+&lt;button class="btn-nyacat btn-nyacat-orange"&gt;茶トラ&lt;/button&gt;
+&lt;button class="btn-nyacat btn-nyacat-gray"&gt;グレー&lt;/button&gt;
+&lt;button class="btn-nyacat btn-nyacat-calico"&gt;三毛猫&lt;/button&gt;
+&lt;button class="btn-nyacat btn-nyacat-black"&gt;黒猫&lt;/button&gt;
+&lt;button class="btn-nyacat btn-nyacat-white"&gt;白猫&lt;/button&gt;
 
 &lt;!-- 猫パーツ付き --&gt;
-&lt;button class="btn-neko btn-neko-tail"&gt;尻尾付き&lt;/button&gt;
-&lt;button class="btn-neko btn-neko-paws"&gt;肉球付き&lt;/button&gt;
-&lt;button class="btn-neko btn-neko-paws-css"&gt;CSS肉球&lt;/button&gt;
+&lt;button class="btn-nyacat btn-nyacat-tail"&gt;尻尾付き&lt;/button&gt;
+&lt;button class="btn-nyacat btn-nyacat-paws"&gt;肉球付き&lt;/button&gt;
+&lt;button class="btn-nyacat btn-nyacat-paws-css"&gt;CSS肉球&lt;/button&gt;
 
 &lt;!-- NekoInput --&gt;
 &lt;input type="text" class="input-neko" placeholder="基本の入力"&gt;
@@ -376,28 +1089,38 @@
 &lt;input type="text" class="input-neko input-neko-gray" placeholder="グレー風"&gt;
 
 &lt;!-- NekoLoading --&gt;
-&lt;div class="loading-neko"&gt;&lt;/div&gt;
-&lt;div class="loading-neko-groom"&gt;&lt;/div&gt;
+&lt;div class="loading-nyacat"&gt;&lt;/div&gt;
+&lt;div class="loading-nyacat-groom"&gt;&lt;/div&gt;
 
 &lt;!-- サイズバリエーション --&gt;
-&lt;div class="loading-neko loading-neko-sm"&gt;&lt;/div&gt;
-&lt;div class="loading-neko loading-neko-lg"&gt;&lt;/div&gt;
+&lt;div class="loading-nyacat loading-nyacat-sm"&gt;&lt;/div&gt;
+&lt;div class="loading-nyacat loading-nyacat-lg"&gt;&lt;/div&gt;
+
+&lt;!-- NekoCard --&gt;
+&lt;div class="card-nyacat"&gt;基本のカード&lt;/div&gt;
+&lt;div class="card-nyacat card-nyacat-orange"&gt;茶トラ猫の箱&lt;/div&gt;
+&lt;div class="card-nyacat card-nyacat-peek"&gt;のぞき見カード&lt;/div&gt;
+&lt;div class="card-nyacat card-nyacat-family"&gt;ファミリーカード&lt;/div&gt;
+
+&lt;!-- サイズバリエーション --&gt;
+&lt;div class="card-nyacat card-nyacat-sm"&gt;小さな箱&lt;/div&gt;
+&lt;div class="card-nyacat card-nyacat-lg"&gt;大きな箱&lt;/div&gt;
 
 &lt;!-- ボタンとの組み合わせ --&gt;
-&lt;button class="btn-neko flex items-center space-x-2" disabled&gt;
-  &lt;div class="loading-neko-sm"&gt;&lt;/div&gt;
+&lt;button class="btn-nyacat flex items-center space-x-2" disabled&gt;
+  &lt;div class="loading-nyacat-sm"&gt;&lt;/div&gt;
   &lt;span&gt;送信中...&lt;/span&gt;
 &lt;/button&gt;
 
 &lt;!-- カスタムカラー --&gt;
-&lt;div class="bg-neko-pink text-neko-black p-4 rounded-paw"&gt;
+&lt;div class="bg-neko-pink text-nyacat-black p-4 rounded-paw"&gt;
   猫色の背景
 &lt;/div&gt;</code></pre>
         </div>
       </section>
     </main>
 
-    <footer class="text-center mt-12 text-neko-brown">
+    <footer class="text-center mt-12 text-nyacat-brown">
       <p>🐾 Made with love for cat lovers 🐾</p>
     </footer>
   </div>

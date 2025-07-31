@@ -3,11 +3,11 @@ import plugin from 'tailwindcss/plugin'
 export default plugin(function({ addComponents, addUtilities, addBase }) {
   // キーフレームアニメーションを追加
   addBase({
-    '@keyframes neko-spin': {
+    '@keyframes nyacat-spin': {
       '0%': { transform: 'translate(-50%, -50%) rotate(0deg)' },
       '100%': { transform: 'translate(-50%, -50%) rotate(360deg)' }
     },
-    '@keyframes neko-groom': {
+    '@keyframes nyacat-groom': {
       '0%, 100%': { transform: 'translate(-50%, -50%) scale(1)' },
       '25%': { transform: 'translate(-50%, -60%) scale(0.9) rotate(-10deg)' },
       '50%': { transform: 'translate(-50%, -40%) scale(1.1) rotate(5deg)' },
@@ -15,9 +15,9 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     }
   })
 
-  // NekoButton コンポーネント
+  // NyacatButton コンポーネント
   addComponents({
-    '.btn-neko': {
+    '.btn-nyacat': {
       '@apply px-6 py-3 rounded-paw font-medium transition-all duration-200 cursor-pointer': {},
       'background': 'linear-gradient(135deg, #FFB6C1, #FFA07A)',
       'color': '#2F2F2F',
@@ -56,7 +56,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // ハチワレ猫
-    '.btn-neko-tuxedo': {
+    '.btn-nyacat-tuxedo': {
       '@apply border-2 font-medium': {},
       'background': 'linear-gradient(135deg, white 0%, white 40%, #1f2937 40%, #1f2937 60%, white 60%, white 100%)',
       'color': '#000000',
@@ -74,7 +74,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // 茶トラ猫
-    '.btn-neko-orange': {
+    '.btn-nyacat-orange': {
       'background': 'repeating-linear-gradient(45deg, #FF8C00, #FF8C00 8px, #FFA500 8px, #FFA500 16px)',
       'color': '#FFFFFF',
       '&:hover': {
@@ -83,7 +83,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // グレー猫
-    '.btn-neko-gray': {
+    '.btn-nyacat-gray': {
       'background': 'repeating-linear-gradient(90deg, #A9A9A9, #A9A9A9 6px, #808080 6px, #808080 12px)',
       'color': '#FFFFFF',
       '&:hover': {
@@ -92,7 +92,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // 三毛猫
-    '.btn-neko-calico': {
+    '.btn-nyacat-calico': {
       '@apply border-2 font-medium': {},
       'background': `
         radial-gradient(ellipse at 20% 30%, #ea580c 0%, transparent 50%),
@@ -122,7 +122,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // 黒猫
-    '.btn-neko-black': {
+    '.btn-nyacat-black': {
       'background': 'linear-gradient(135deg, #2F2F2F, #1a1a1a)',
       'color': '#FFFFFF',
       'box-shadow': 'inset 0 1px 0 rgba(255, 255, 255, 0.1)',
@@ -134,7 +134,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // 白猫
-    '.btn-neko-white': {
+    '.btn-nyacat-white': {
       'background': 'linear-gradient(135deg, #FFFFFF, #F5F5F5)',
       'color': '#2F2F2F',
       'border': '2px solid #E0E0E0',
@@ -147,7 +147,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // 尻尾パーツ
-    '.btn-neko-tail': {
+    '.btn-nyacat-tail': {
       'position': 'relative',
       
       '&::after': {
@@ -170,7 +170,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // 肉球パーツ（絵文字版）
-    '.btn-neko-paws': {
+    '.btn-nyacat-paws': {
       'position': 'relative',
       
       '&::before': {
@@ -190,7 +190,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // 肉球パーツ（CSS版）
-    '.btn-neko-paws-css': {
+    '.btn-nyacat-paws-css': {
       'position': 'relative',
       
       '&::before': {
@@ -216,14 +216,14 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // NekoInput ラッパー
-    '.neko-input-wrapper': {
+    '.nyacat-input-wrapper': {
       'position': 'relative',
       'display': 'inline-block',
       'width': '100%'
     },
 
     // NekoInput 基本スタイル
-    '.neko-input-wrapper input, .neko-input-wrapper select, .neko-input-wrapper textarea': {
+    '.nyacat-input-wrapper input, .nyacat-input-wrapper select, .nyacat-input-wrapper textarea': {
       '@apply w-full px-4 py-2 border-2 border-gray-300 rounded-lg': {},
       'transition': 'all 0.3s ease',
       'outline': 'none',
@@ -235,7 +235,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // 猫耳
-    '.neko-ears::before, .neko-ears::after': {
+    '.nyacat-ears::before, .nyacat-ears::after': {
       'content': '""',
       'position': 'absolute',
       'top': '-12px',
@@ -247,7 +247,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
       'transform-origin': 'bottom center'
     },
 
-    '.neko-ears::before': {
+    '.nyacat-ears::before': {
       'left': '25px',
       'border-left': '12px solid transparent',
       'border-right': '6px solid transparent', 
@@ -256,7 +256,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
       'box-shadow': 'inset -3px -4px 0 #ff8fa3, 0 2px 4px rgba(0, 0, 0, 0.1)'
     },
 
-    '.neko-ears::after': {
+    '.nyacat-ears::after': {
       'right': '25px',
       'border-left': '6px solid transparent',
       'border-right': '12px solid transparent',
@@ -266,7 +266,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // 尻尾
-    '.neko-tail': {
+    '.nyacat-tail': {
       'position': 'absolute',
       'right': '-25px',
       'top': '50%',
@@ -284,64 +284,239 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
     },
 
     // フォーカス時の猫パーツ表示
-    '.neko-input-wrapper input:focus ~ .neko-ears::before, .neko-input-wrapper input:focus ~ .neko-ears::after': {
+    '.nyacat-input-wrapper input:focus ~ .nyacat-ears::before, .nyacat-input-wrapper input:focus ~ .nyacat-ears::after': {
       'opacity': '1'
     },
 
-    '.neko-input-wrapper input:focus ~ .neko-ears::before': {
+    '.nyacat-input-wrapper input:focus ~ .nyacat-ears::before': {
       'animation': 'ear-wiggle 0.8s ease-in-out'
     },
 
-    '.neko-input-wrapper input:focus ~ .neko-ears::after': {
+    '.nyacat-input-wrapper input:focus ~ .nyacat-ears::after': {
       'animation': 'ear-wiggle-right 0.8s ease-in-out'
     },
 
-    '.neko-input-wrapper input:focus ~ .neko-tail': {
+    '.nyacat-input-wrapper input:focus ~ .nyacat-tail': {
       'opacity': '1',
       'animation': 'tail-wag-input 1.2s ease-in-out infinite'
     },
 
     // selectとtextarea用
-    '.neko-input-wrapper select:focus ~ .neko-ears::before, .neko-input-wrapper select:focus ~ .neko-ears::after': {
+    '.nyacat-input-wrapper select:focus ~ .nyacat-ears::before, .nyacat-input-wrapper select:focus ~ .nyacat-ears::after': {
       'opacity': '1'
     },
 
-    '.neko-input-wrapper select:focus ~ .neko-ears::before': {
+    '.nyacat-input-wrapper select:focus ~ .nyacat-ears::before': {
       'animation': 'ear-wiggle 0.8s ease-in-out'
     },
 
-    '.neko-input-wrapper select:focus ~ .neko-ears::after': {
+    '.nyacat-input-wrapper select:focus ~ .nyacat-ears::after': {
       'animation': 'ear-wiggle-right 0.8s ease-in-out'
     },
 
-    '.neko-input-wrapper select:focus ~ .neko-tail': {
+    '.nyacat-input-wrapper select:focus ~ .nyacat-tail': {
       'opacity': '1',
       'animation': 'tail-wag-input 1.2s ease-in-out infinite'
     },
 
-    '.neko-input-wrapper textarea:focus ~ .neko-ears::before, .neko-input-wrapper textarea:focus ~ .neko-ears::after': {
+    '.nyacat-input-wrapper textarea:focus ~ .nyacat-ears::before, .nyacat-input-wrapper textarea:focus ~ .nyacat-ears::after': {
       'opacity': '1'
     },
 
-    '.neko-input-wrapper textarea:focus ~ .neko-ears::before': {
+    '.nyacat-input-wrapper textarea:focus ~ .nyacat-ears::before': {
       'animation': 'ear-wiggle 0.8s ease-in-out'
     },
 
-    '.neko-input-wrapper textarea:focus ~ .neko-ears::after': {
+    '.nyacat-input-wrapper textarea:focus ~ .nyacat-ears::after': {
       'animation': 'ear-wiggle-right 0.8s ease-in-out'
     },
 
-    '.neko-input-wrapper textarea:focus ~ .neko-tail': {
+    '.nyacat-input-wrapper textarea:focus ~ .nyacat-tail': {
       'opacity': '1',
       'animation': 'tail-wag-input 1.2s ease-in-out infinite'
     },
 
-    // NekoInput エラー状態（ラッパー用）
-    '.neko-input-error input, .neko-input-error select, .neko-input-error textarea': {
+    // NyacatCard コンポーネント - 段ボール箱から猫が顔を出すカード
+    '.card-nyacat': {
+      '@apply bg-white rounded-lg shadow-md border-2 border-gray-200 p-6 relative overflow-hidden': {},
+      '@apply transition-all duration-300 ease-in-out': {},
+      'min-height': '200px',
+      
+      // 段ボール箱のテクスチャ
+      'background': `
+        linear-gradient(90deg, #f5f5f0 0%, #f0f0eb 50%, #f5f5f0 100%),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)
+      `,
+      
+      // 箱の折り目ライン
+      '&::before': {
+        'content': '""',
+        'position': 'absolute',
+        'top': '0',
+        'left': '50%',
+        'width': '1px',
+        'height': '100%',
+        'background': 'rgba(0,0,0,0.1)',
+        'transform': 'translateX(-50%)'
+      },
+      
+      // 猫の顔（初期状態は隠れている）
+      '&::after': {
+        'content': '"🐱"',
+        'position': 'absolute',
+        'top': '-30px',
+        'left': '50%',
+        'transform': 'translateX(-50%)',
+        'font-size': '32px',
+        'transition': 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+        'opacity': '0'
+      }
+    },
+
+    // ホバー時に猫が箱から顔を出す
+    '.card-nyacat:hover': {
+      '@apply shadow-lg': {},
+      'transform': 'translateY(-2px)',
+      
+      '&::after': {
+        'top': '10px',
+        'opacity': '1'
+      }
+    },
+
+    // 猫種バリエーション - 箱の色も変更
+    '.card-nyacat-orange': {
+      'background': `
+        linear-gradient(90deg, #fff5e6 0%, #ffedd5 50%, #fff5e6 100%),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,140,0,0.1) 2px, rgba(255,140,0,0.1) 4px)
+      `,
+      
+      '&::after': {
+        'content': '"🐱"',
+        'color': '#ff8c00'
+      }
+    },
+
+    '.card-nyacat-tuxedo': {
+      'background': `
+        linear-gradient(90deg, #fafafa 0%, #f5f5f5 50%, #fafafa 100%),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px)
+      `,
+      
+      '&::after': {
+        'content': '"🐱"',
+        'background': 'linear-gradient(45deg, #000 50%, #fff 50%)',
+        '-webkit-background-clip': 'text',
+        'background-clip': 'text',
+        'color': 'transparent'
+      }
+    },
+
+    '.card-nyacat-gray': {
+      'background': `
+        linear-gradient(90deg, #f8f9fa 0%, #f1f3f4 50%, #f8f9fa 100%),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(169,169,169,0.1) 2px, rgba(169,169,169,0.1) 4px)
+      `,
+      
+      '&::after': {
+        'content': '"🐱"',
+        'color': '#6b7280'
+      }
+    },
+
+    '.card-nyacat-calico': {
+      'background': `
+        radial-gradient(ellipse at 20% 30%, rgba(255,140,0,0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(0,0,0,0.08) 0%, transparent 40%),
+        linear-gradient(90deg, #fff5e6 0%, #ffedd5 50%, #fff5e6 100%),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,140,0,0.05) 2px, rgba(255,140,0,0.05) 4px)
+      `,
+      
+      '&::after': {
+        'content': '"🐱"',
+        'background': 'linear-gradient(45deg, #ff8c00 33%, #000 33%, #000 66%, #ff8c00 66%)',
+        '-webkit-background-clip': 'text',
+        'background-clip': 'text',
+        'color': 'transparent'
+      }
+    },
+
+    '.card-nyacat-black': {
+      'background': `
+        linear-gradient(90deg, #f9fafb 0%, #f3f4f6 50%, #f9fafb 100%),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)
+      `,
+      
+      '&::after': {
+        'content': '"🐱"',
+        'color': '#1f2937'
+      }
+    },
+
+    '.card-nyacat-white': {
+      'background': `
+        linear-gradient(90deg, #ffffff 0%, #fafafa 50%, #ffffff 100%),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px)
+      `,
+      'border-color': '#e5e7eb',
+      
+      '&::after': {
+        'content': '"🐱"',
+        'color': '#ffffff',
+        'text-shadow': '1px 1px 2px rgba(0,0,0,0.3)'
+      }
+    },
+
+    // サイズバリエーション - Small
+    '.card-nyacat-sm': {
+      '@apply p-4': {},
+      'min-height': '120px',
+      
+      '&::after': {
+        'font-size': '24px'
+      }
+    },
+
+    // サイズバリエーション - Large
+    '.card-nyacat-lg': {
+      '@apply p-8': {},
+      'min-height': '280px',
+      
+      '&::after': {
+        'font-size': '48px'
+      }
+    },
+
+    // 箱の開き具合バリエーション - 常に少し見えている
+    '.card-nyacat-peek::after': {
+      'top': '-10px',
+      'opacity': '0.6'
+    },
+
+    '.card-nyacat-peek:hover::after': {
+      'top': '15px',
+      'opacity': '1',
+      'transform': 'translateX(-50%) scale(1.1)'
+    },
+
+    // 複数猫バージョン - 家族
+    '.card-nyacat-family::after': {
+      'content': '"🐱🐱🐱"',
+      'font-size': '20px',
+      'letter-spacing': '-8px'
+    },
+
+    '.card-nyacat-family:hover::after': {
+      'letter-spacing': '2px',
+      'font-size': '24px'
+    },
+
+    // NyacatInput エラー状態（ラッパー用）
+    '.nyacat-input-error input, .nyacat-input-error select, .nyacat-input-error textarea': {
       'border-color': '#f87171 !important'
     },
 
-    '.neko-input-error::before': {
+    '.nyacat-input-error::before': {
       'content': '"😾"',
       'position': 'absolute',
       'right': '10px',
@@ -352,12 +527,12 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
       'z-index': '10'
     },
 
-    // NekoInput 成功状態（ラッパー用）
-    '.neko-input-success input, .neko-input-success select, .neko-input-success textarea': {
+    // NyacatInput 成功状態（ラッパー用）
+    '.nyacat-input-success input, .nyacat-input-success select, .nyacat-input-success textarea': {
       'border-color': '#4ade80 !important'
     },
 
-    '.neko-input-success::before': {
+    '.nyacat-input-success::before': {
       'content': '"😸"',
       'position': 'absolute',
       'right': '10px',
@@ -368,8 +543,8 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
       'z-index': '10'
     },
 
-    // NekoLoading コンポーネント
-    '.loading-neko': {
+    // NyacatLoading コンポーネント
+    '.loading-nyacat': {
       '@apply inline-block relative': {},
       'width': '40px',
       'height': '40px',
@@ -381,12 +556,12 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
         'left': '50%',
         'transform': 'translate(-50%, -50%)',
         'font-size': '24px',
-        'animation': 'neko-spin 2s linear infinite'
+        'animation': 'nyacat-spin 2s linear infinite'
       }
     },
 
     // 毛づくろいローディング
-    '.loading-neko-groom': {
+    '.loading-nyacat-groom': {
       '@apply inline-block relative': {},
       'width': '40px',
       'height': '40px',
@@ -398,13 +573,13 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
         'left': '50%',
         'transform': 'translate(-50%, -50%)',
         'font-size': '24px',
-        'animation': 'neko-groom 3s ease-in-out infinite'
+        'animation': 'nyacat-groom 3s ease-in-out infinite'
       }
     },
 
 
     // サイズバリエーション
-    '.loading-neko-sm': {
+    '.loading-nyacat-sm': {
       'width': '24px',
       'height': '24px',
       
@@ -413,7 +588,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
       }
     },
 
-    '.loading-neko-lg': {
+    '.loading-nyacat-lg': {
       'width': '60px',
       'height': '60px',
       
@@ -422,7 +597,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
       }
     },
 
-    '.loading-neko-xl': {
+    '.loading-nyacat-xl': {
       'width': '80px',
       'height': '80px',
       
@@ -445,7 +620,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
   theme: {
     extend: {
       colors: {
-        'neko': {
+        'nyacat': {
           'pink': '#FFB6C1',
           'salmon': '#FFA07A', 
           'cream': '#FFF8DC',
@@ -483,8 +658,8 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
         'ear-wiggle': 'ear-wiggle 0.8s ease-in-out',
         'ear-wiggle-right': 'ear-wiggle-right 0.8s ease-in-out',
         'tail-wag-input': 'tail-wag-input 1.2s ease-in-out infinite',
-        'neko-spin': 'neko-spin 2s linear infinite',
-        'neko-groom': 'neko-groom 3s ease-in-out infinite'
+        'nyacat-spin': 'nyacat-spin 2s linear infinite',
+        'nyacat-groom': 'nyacat-groom 3s ease-in-out infinite'
       },
       keyframes: {
         'paw-bounce': {
@@ -529,11 +704,11 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
           '50%': { transform: 'translateY(-50%) rotate(-8deg) scaleY(1.02)' },
           '75%': { transform: 'translateY(-55%) rotate(12deg) scaleY(1.08)' }
         },
-        'neko-spin': {
+        'nyacat-spin': {
           '0%': { transform: 'translate(-50%, -50%) rotate(0deg)' },
           '100%': { transform: 'translate(-50%, -50%) rotate(360deg)' }
         },
-        'neko-groom': {
+        'nyacat-groom': {
           '0%, 100%': { transform: 'translate(-50%, -50%) scale(1)' },
           '25%': { transform: 'translate(-50%, -60%) scale(0.9) rotate(-10deg)' },
           '50%': { transform: 'translate(-50%, -40%) scale(1.1) rotate(5deg)' },
