@@ -14,7 +14,8 @@ A delightful cat-themed UI component library built **exclusively for TailwindCSS
 - 📦 **Cardboard Box Modals**: Cats peek out from boxes with delightful animations
 - 🎨 **Multiple Cat Breeds**: Orange tabby, tuxedo, gray, calico, black, and white cats
 - ⚡ **Framework Agnostic**: Works with React, Vue, Angular, Rails 8, and vanilla JavaScript
-- 🎭 **Web Components**: Modern, reusable components with Shadow DOM
+- 🚫 **No JavaScript Required**: Most components work with CSS only (buttons, cards, inputs, loading)
+- 🎭 **Web Components**: Interactive modals with modern Web Components (minimal JS needed)
 - 🎯 **TailwindCSS v4 Native**: Built with `@theme`, CSS variables, and `color-mix()`
 - 📱 **Responsive**: Mobile-friendly designs optimized for modern browsers
 - 🌟 **Modern CSS**: Uses cutting-edge CSS features like `color-mix()` and CSS custom properties
@@ -162,53 +163,153 @@ Animated loading indicators with spinning and grooming cats.
 </button>
 ```
 
-### 📦 NyacatModal (Web Components)
-Framework-agnostic modal where cats pop out of cardboard boxes.
+### 📦 NyacatModal - インタラクティブな段ボール箱モーダル
+
+#### 💡 JavaScript が必要です
+モーダルは本質的にインタラクティブなコンポーネントのため、少量のJavaScriptが必要です。
+
+#### Web Components版（推奨）
+
+**利点:**
+- **フレームワーク非依存**: React、Vue、Rails、Angular等で同じコードが動作
+- **カプセル化**: Shadow DOMでスタイルが隔離され、競合しない  
+- **宣言的**: HTML属性でオプションを指定
+- **標準技術**: ブラウザネイティブなWeb標準
 
 ```html
-<!-- Basic usage -->
-<nyacat-modal id="myModal">
-  <h3>Hello from the cat!</h3>
-  <p>This cat is in a cardboard box modal.</p>
-  <button onclick="this.closest('nyacat-modal').close()">Close</button>
+<!-- ボタンで開く -->
+<button onclick="document.getElementById('catModal').open()">
+  モーダルを開く
+</button>
+
+<!-- モーダル定義 -->
+<nyacat-modal id="catModal" variant="orange" size="lg">
+  <h3>猫のモーダル</h3>
+  <p>段ボール箱から猫が飛び出します！</p>
+  <button onclick="this.closest('nyacat-modal').close()">閉じる</button>
 </nyacat-modal>
 
-<!-- With variants and sizes -->
-<nyacat-modal variant="orange" size="lg">
-  <h3>Big Orange Cat Modal</h3>
-  <p>A large modal with an orange tabby cat.</p>
-</nyacat-modal>
-
-<!-- JavaScript control -->
+<!-- JavaScript制御 -->
 <script>
-  // Open modal
-  document.getElementById('myModal').open();
+  // プログラムで開く/閉じる
+  document.getElementById('catModal').open();
+  document.getElementById('catModal').close();
   
-  // Close modal
-  document.getElementById('myModal').close();
-  
-  // Event listeners
-  document.getElementById('myModal').addEventListener('nyacat-modal-open', (e) => {
+  // イベントリスナー
+  document.getElementById('catModal').addEventListener('nyacat-modal-open', (e) => {
     console.log('Modal opened!', e.detail);
   });
 </script>
 ```
 
-#### NyacatModal Attributes
+#### Rails + Stimulus版
+
+```javascript
+// app/javascript/controllers/nyacat_modal_controller.js
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  static targets = ["modal"]
+
+  open() {
+    this.modalTarget.open()
+  }
+
+  close() {
+    this.modalTarget.close()
+  }
+}
+```
+
+```erb
+<div data-controller="nyacat-modal">
+  <button data-action="click->nyacat-modal#open" class="btn-nyacat">
+    モーダルを開く
+  </button>
+  
+  <nyacat-modal data-nyacat-modal-target="modal" variant="orange">
+    <h3>Rails + Stimulus</h3>
+    <p>StimulusでnyacatモーダルをRailsらしく制御！</p>
+    <button data-action="click->nyacat-modal#close" class="btn-nyacat">
+      閉じる
+    </button>
+  </nyacat-modal>
+</div>
+```
+
+#### React版
+
+```jsx
+import { useRef } from 'react';
+
+function App() {
+  const modalRef = useRef(null);
+
+  const openModal = () => modalRef.current?.open();
+  const closeModal = () => modalRef.current?.close();
+
+  return (
+    <>
+      <button className="btn-nyacat" onClick={openModal}>
+        Open Cat Modal
+      </button>
+      
+      <nyacat-modal ref={modalRef} variant="tuxedo" size="lg">
+        <h3>React + Nyacat UI</h3>
+        <p>ReactでもWeb Componentsは使えます！</p>
+        <button className="btn-nyacat" onClick={closeModal}>
+          Close
+        </button>
+      </nyacat-modal>
+    </>
+  );
+}
+```
+
+#### Vue版
+
+```vue
+<template>
+  <div>
+    <button class="btn-nyacat" @click="openModal">Open Cat Modal</button>
+    
+    <nyacat-modal ref="catModal" variant="gray" size="sm">
+      <h3>Vue + Nyacat UI</h3>
+      <p>VueでもWeb Componentsが使えます！</p>
+      <button class="btn-nyacat" @click="closeModal">Close</button>
+    </nyacat-modal>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    openModal() {
+      this.$refs.catModal.open();
+    },
+    closeModal() {
+      this.$refs.catModal.close();
+    }
+  }
+}
+</script>
+```
+
+#### 属性（Attributes）
 
 - `variant`: `orange`, `tuxedo`, `gray`, `black`, `white` (default: none)
-- `size`: `sm`, `lg` (default: medium)
-- `open`: Present to show modal, absent to hide
+- `size`: `sm`, `lg` (default: medium)  
+- `open`: 初期状態で開いている場合に指定
 
-#### NyacatModal Methods
+#### メソッド（Methods）
 
-- `.open()`: Show the modal with cat animation
-- `.close()`: Hide the modal with cat hiding animation
+- `.open()`: 猫アニメーション付きでモーダルを表示
+- `.close()`: 猫が隠れるアニメーション付きでモーダルを閉じる
 
-#### NyacatModal Events
+#### イベント（Events）
 
-- `nyacat-modal-open`: Fired when modal opens
-- `nyacat-modal-close`: Fired when modal closes
+- `nyacat-modal-open`: モーダルが開いた時に発火
+- `nyacat-modal-close`: モーダルが閉じた時に発火
 
 ## 🎨 Cat Breeds
 
@@ -332,19 +433,24 @@ export default {
 
 ### Rails
 ```erb
-<%# app/views/layouts/application.html.erb %>
-<%= javascript_include_tag "https://cdn.jsdelivr.net/npm/nyacat-ui@latest/dist/web-components.js", type: "module" %>
-
-<%# In your views %>
-<button class="btn-nyacat" onclick="document.getElementById('railsModal').open()">
-  Open Cat Modal
+<%# 基本のコンポーネント（JavaScript不要） %>
+<button class="btn-nyacat btn-nyacat-orange">
+  Purr-fect Rails Button! 🐱
 </button>
 
-<nyacat-modal id="railsModal" variant="calico">
-  <h3>Rails + Nyacat UI</h3>
-  <p>Cats work purr-fectly with Rails!</p>
-  <button onclick="this.closest('nyacat-modal').close()">Close</button>
-</nyacat-modal>
+<div class="nyacat-input-wrapper">
+  <%= text_field_tag :search, nil, placeholder: "Focus for cat ears!" %>
+  <div class="nyacat-ears"></div>
+  <div class="nyacat-tail"></div>
+</div>
+
+<div class="card-nyacat card-nyacat-tuxedo">
+  <h3>Rails Card</h3>
+  <p>Hover to see the cat!</p>
+</div>
+
+<%# モーダル使用時は Web Components が必要 %>
+<%= javascript_include_tag "https://cdn.jsdelivr.net/npm/nyacat-ui@latest/dist/web-components.js", type: "module" %>
 ```
 
 ## 🎭 Custom Styling
