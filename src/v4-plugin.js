@@ -59,7 +59,11 @@ export default plugin({
   base: `
     /* Nyacat UI Base Styles */
     .btn-nyacat {
-      @apply px-6 py-3 rounded-paw font-medium transition-all duration-200 cursor-pointer;
+      padding: 0.75rem 1.5rem;
+      border-radius: theme(borderRadius.paw);
+      font-weight: 500;
+      transition: all 0.2s;
+      cursor: pointer;
       background: linear-gradient(135deg, theme(colors.nyacat.pink), theme(colors.nyacat.salmon));
       color: theme(colors.nyacat.black);
       border: 2px solid transparent;
@@ -73,7 +77,10 @@ export default plugin({
     }
     
     .loading-nyacat {
-      @apply inline-block relative w-10 h-10;
+      display: inline-block;
+      position: relative;
+      width: 2.5rem;
+      height: 2.5rem;
     }
     
     .loading-nyacat::before {

@@ -1,10 +1,7 @@
-import nekoUI from './src/index.js'
+import nyacatV4Plugin from './src/v4-plugin.js'
 
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./demo/**/*.{html,js}'],
-  theme: {
-    extend: {},
-  },
-  plugins: [nekoUI],
+  plugins: [nyacatV4Plugin],
 }

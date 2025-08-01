@@ -1,6 +1,6 @@
 {
   "name": "nyacat-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A delightful cat-themed UI component library built for TailwindCSS v4. Features adorable cat animations, cardboard box modals, and pawsome interactions with native v4 support.",
   "type": "module",
   "main": "src/index.css",
@@ -70,13 +70,15 @@
     "tailwindcss": ">=4.0.0"
   },
   "dependencies": {
-    "postcss": "^8.4.31",
-    "autoprefixer": "^10.4.16"
+    "@anthropic-ai/claude-code": "^1.0.65",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31"
   },
   "devDependencies": {
-    "vite": "^5.0.0",
+    "@tailwindcss/postcss": "^4.1.11",
+    "tailwindcss": "^4.0.0",
     "typescript": "^5.2.0",
-    "tailwindcss": "^4.0.0"
+    "vite": "^5.0.0"
   },
   "engines": {
     "node": ">=16.0.0"

@@ -31,19 +31,36 @@ npm install nyacat-ui
 
 ### TailwindCSS v4 Setup
 
-Import Nyacat UI in your main CSS file (e.g., `app/assets/stylesheets/application.css` for Rails):
+**Option 1: CSS-only import (Recommended for stability)**
+
+Import the CSS directly in your main CSS file:
 
 ```css
-@import "nyacat-ui";
+@import "tailwindcss";
+@import "nyacat-ui/src/v4-native.css";
 ```
 
-Or using PostCSS import:
+**Option 2: Plugin integration**
+
+For advanced customization, use the v4-compatible plugin:
+
+```javascript
+// tailwind.config.js
+import nyacatV4Plugin from 'nyacat-ui/src/v4-plugin.js'
+
+export default {
+  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
+  plugins: [nyacatV4Plugin],
+}
+```
+
+Then import in your CSS:
 
 ```css
-@import url('nyacat-ui');
+@import "tailwindcss";
 ```
 
-**That's it!** No configuration needed - Nyacat UI uses TailwindCSS v4's native `@theme` and modern CSS features.
+> **Note**: The v4 plugin uses direct CSS property values instead of `@apply` for maximum compatibility with TailwindCSS v4's architecture.
 
 ### Web Components (Recommended)
 
@@ -208,11 +225,45 @@ Nyacat UI supports multiple cat breed variations:
 
 ### Rails 8 + TailwindCSS v4
 
-Perfect for Rails 8 applications! Add to your `app/assets/stylesheets/application.css`:
+Perfect for Rails 8 applications! 
+
+**Method 1: CSS-only (Recommended)**
+
+Add to your `app/assets/stylesheets/application.css`:
 
 ```css
 @import "tailwindcss";
-@import "nyacat-ui";
+@import "nyacat-ui/src/v4-native.css";
+```
+
+**Method 2: With plugin**
+
+Update your `config/tailwind.config.js`:
+
+```javascript
+import nyacatV4Plugin from 'nyacat-ui/src/v4-plugin.js'
+
+export default {
+  content: [
+    './app/views/**/*.html.erb',
+    './app/helpers/**/*.rb',
+    './app/assets/stylesheets/**/*.css',
+    './app/javascript/**/*.js'
+  ],
+  plugins: [nyacatV4Plugin],
+}
+```
+
+And ensure your PostCSS config uses the v4 plugin:
+
+```javascript
+// postcss.config.js
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+    autoprefixer: {},
+  },
+}
 ```
 
 Then use in your ERB templates:
@@ -332,6 +383,8 @@ Nyacat UI includes a custom color palette:
 
 ## 🛠️ Development
 
+### Local Development
+
 ```bash
 # Clone the repository
 git clone https://github.com/Hitoshi-Noborikawa/nyacat-ui.git
@@ -340,15 +393,30 @@ cd nyacat-ui
 # Install dependencies
 npm install
 
-# Start development server
+# Start development server with demo
 npm run dev
+# This will open http://localhost:3000 with interactive demos
 
 # Build for production
 npm run build
-
-# Run tests
-npm test
 ```
+
+### TailwindCSS v4 Compatibility
+
+This library has been optimized for TailwindCSS v4:
+
+- ✅ **No `@apply` in plugins** - Uses direct CSS property values for maximum compatibility
+- ✅ **Native v4 features** - Leverages `@theme`, `color-mix()`, and CSS custom properties
+- ✅ **PostCSS v4 support** - Compatible with `@tailwindcss/postcss`
+- ✅ **Rails 8 ready** - Works seamlessly with Rails 8's esbuild + TailwindCSS v4 setup
+
+### File Structure
+
+- `src/index.js` - Main plugin (v3 compatible)
+- `src/v4-plugin.js` - TailwindCSS v4 optimized plugin
+- `src/v4-native.css` - Pure CSS version (no plugin required)
+- `src/index.css` - Legacy CSS with `@apply` (v3 only)
+- `dist/web-components.js` - Framework-agnostic Web Components
 
 ## 📝 License
 

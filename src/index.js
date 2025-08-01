@@ -18,7 +18,11 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
   // NyacatButton コンポーネント
   addComponents({
     '.btn-nyacat': {
-      '@apply px-6 py-3 rounded-paw font-medium transition-all duration-200 cursor-pointer': {},
+      'padding': '0.75rem 1.5rem',
+      'border-radius': '1rem',
+      'font-weight': '500',
+      'transition': 'all 0.2s',
+      'cursor': 'pointer',
       'background': 'linear-gradient(135deg, #FFB6C1, #FFA07A)',
       'color': '#2F2F2F',
       'border': '2px solid transparent',
@@ -57,7 +61,8 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
 
     // ハチワレ猫
     '.btn-nyacat-tuxedo': {
-      '@apply border-2 font-medium': {},
+      'border': '2px solid',
+      'font-weight': '500',
       'background': 'linear-gradient(135deg, white 0%, white 40%, #1f2937 40%, #1f2937 60%, white 60%, white 100%)',
       'color': '#000000',
       'border-color': '#1f2937',
@@ -93,7 +98,8 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
 
     // 三毛猫
     '.btn-nyacat-calico': {
-      '@apply border-2 font-medium': {},
+      'border': '2px solid',
+      'font-weight': '500',
       'background': `
         radial-gradient(ellipse at 20% 30%, #ea580c 0%, transparent 50%),
         radial-gradient(ellipse at 70% 60%, #1f2937 0%, transparent 40%),
@@ -224,7 +230,10 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
 
     // NekoInput 基本スタイル
     '.nyacat-input-wrapper input, .nyacat-input-wrapper select, .nyacat-input-wrapper textarea': {
-      '@apply w-full px-4 py-2 border-2 border-gray-300 rounded-lg': {},
+      'width': '100%',
+      'padding': '0.5rem 1rem',
+      'border': '2px solid #d1d5db',
+      'border-radius': '0.5rem',
       'transition': 'all 0.3s ease',
       'outline': 'none',
       
@@ -338,8 +347,14 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
 
     // NyacatCard コンポーネント - 段ボール箱から猫が顔を出すカード
     '.card-nyacat': {
-      '@apply bg-white rounded-lg shadow-md border-2 border-gray-200 p-6 relative overflow-hidden': {},
-      '@apply transition-all duration-300 ease-in-out': {},
+      'background-color': 'white',
+      'border-radius': '0.5rem',
+      'box-shadow': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      'border': '2px solid #e5e7eb',
+      'padding': '1.5rem',
+      'position': 'relative',
+      'overflow': 'hidden',
+      'transition': 'all 0.3s ease-in-out',
       'min-height': '200px',
       
       // 段ボール箱のテクスチャ
@@ -375,7 +390,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
 
     // ホバー時に猫が箱から顔を出す
     '.card-nyacat:hover': {
-      '@apply shadow-lg': {},
+      'box-shadow': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       'transform': 'translateY(-2px)',
       
       '&::after': {
@@ -469,7 +484,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
 
     // サイズバリエーション - Small
     '.card-nyacat-sm': {
-      '@apply p-4': {},
+      'padding': '1rem',
       'min-height': '120px',
       
       '&::after': {
@@ -479,7 +494,7 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
 
     // サイズバリエーション - Large
     '.card-nyacat-lg': {
-      '@apply p-8': {},
+      'padding': '2rem',
       'min-height': '280px',
       
       '&::after': {
@@ -545,7 +560,8 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
 
     // NyacatLoading コンポーネント
     '.loading-nyacat': {
-      '@apply inline-block relative': {},
+      'display': 'inline-block',
+      'position': 'relative',
       'width': '40px',
       'height': '40px',
       
@@ -562,7 +578,8 @@ export default plugin(function({ addComponents, addUtilities, addBase }) {
 
     // 毛づくろいローディング
     '.loading-nyacat-groom': {
-      '@apply inline-block relative': {},
+      'display': 'inline-block',
+      'position': 'relative',
       'width': '40px',
       'height': '40px',
       
